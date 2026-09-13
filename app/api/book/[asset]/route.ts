@@ -1,11 +1,42 @@
-const files:Record<string,{id:string;type:string}>={
+type DriveFile={id:string;type:string};
+const books:Record<string,Record<string,DriveFile>>={'dungeon-crawler-carl':{
  audio:{id:'10_SYUSwZwMzUae3YVZ4qQr-HKFX-cf_a',type:'audio/mp4'},
  prepared:{id:'1WWTZyxBz9YYbDf7Y6hfRhauYR8erUYLT',type:'application/json; charset=utf-8'},
  epub:{id:'1_pkY8LQ4d_jwvh61FLe6X5IGPt7o6oeE',type:'application/epub+zip'},
  alignment:{id:'1lCRdBXLG8UdggN6B8j7Vk2ByH4GRDEzq',type:'application/json'}
-};
+},'the-car':{
+ audio:{id:'1pjIxN4uISRCEVRjKIXwYY_wag9x9W7pi',type:'audio/mp4'},
+ prepared:{id:'1WpJgogtvI0t6d7GU7vgfTQsVTwZvKvr-',type:'application/json; charset=utf-8'},
+ epub:{id:'1xMAkEsN_D4U9eCpTuRRkcl2HPCh3MehX',type:'application/epub+zip'},
+ alignment:{id:'18HG1Idfw3fO2wngjVA4antcqlMnUbwHG',type:'application/json'},
+ cover:{id:'1XGRrtpMA9Iy3qPc0JgSSXjnI9hvDsm5l',type:'image/jpeg'}
+},'scythe':{
+ audio:{id:'1-zyKxmuFsuB9T078xNuTEdV3qDOGPNiE',type:'audio/mpeg'},
+ prepared:{id:'1w71H201njkS8eGBxxKfKuXh9yBaQTtYG',type:'application/json; charset=utf-8'},
+ epub:{id:'1H8JXADJxHwWUYA-8u_jxuGo4yDL2TE53',type:'application/epub+zip'},
+ alignment:{id:'1LbB61VgxOGGn6UcW3mIeJa4xZYM0SgBW',type:'application/json'},
+ cover:{id:'1zuCMBncZqR8dqBiaq_2pCywZH0iE1C-2',type:'image/jpeg'}
+},'eragon':{
+ audio:{id:'1RF-J7mzZoG3AJzHM2dj9resgIs5rXrbW',type:'audio/mp4'},
+ prepared:{id:'1F6u0OWPWrJenembohmY-2FFVAI0_k4i0',type:'application/json; charset=utf-8'},
+ epub:{id:'1mWSCDFj2cnCndtwzLvtzi5XAqIWBascu',type:'application/epub+zip'},
+ alignment:{id:'1-V8IsF1SykHnZD2BcGMkpE2hWuT8mqpH',type:'application/json'},
+ cover:{id:'1TSbFN7oSxsC4wj7J-JxzESxU-LqWF59m',type:'image/jpeg'}
+},'project-hail-mary':{
+ audio:{id:'19EBL2jgPQF6DFpTCVEjo9An99wgqI94L',type:'audio/mp4'},
+ prepared:{id:'1TDYNIIX78ohGncIHZVtFd1WEORB9ooCU',type:'application/json; charset=utf-8'},
+ epub:{id:'1WolXvTtv99RqxkIkkPzeF5lv12IvW7zr',type:'application/epub+zip'},
+ alignment:{id:'1Nzm0QxN4q-ArY6VZXh4rseUK8xWRIkPb',type:'application/json'},
+ cover:{id:'1oEoe34k3638n45QvRWJSbll-u2cRYSw3',type:'image/jpeg'}
+},'just-mercy':{
+ audio:{id:'1Sp-XYQWbs0g6iOjQpl0hpg7Lo_Q12SyW',type:'audio/mp4'},
+ prepared:{id:'1ScJgBpD5YDCkha2H--FcUn8hzZ8-3wAT',type:'application/json; charset=utf-8'},
+ epub:{id:'1AKrSzEmc5DY-mQA3vkgC_1RjO941e1Vy',type:'application/epub+zip'},
+ alignment:{id:'1jow8e9prX0w9P3-E2hcRCe2X5y24Pw8Y',type:'application/json'},
+ cover:{id:'13QsFZ6mtYOBSNHebSJ7_Zh_wQVkuWceu',type:'image/jpeg'}
+}};
 export async function GET(request:Request,{params}:{params:Promise<{asset:string}>}){
- const {asset}=await params;const file=files[asset];if(!file)return new Response('Not found',{status:404});
+ const {asset}=await params;const id=new URL(request.url).searchParams.get('book')||'dungeon-crawler-carl';const file=Object.hasOwn(books,id)&&Object.hasOwn(books[id],asset)?books[id][asset]:undefined;if(!file)return new Response('Not found',{status:404});
  const range=request.headers.get('range');if(range&&!/^bytes=(?:\d+-\d*|-\d+)$/.test(range))return new Response('Invalid range',{status:416});
  // Drive rejects open-ended audio requests from the hosted worker. Return a
  // bounded partial response; the media element requests the next part as needed.

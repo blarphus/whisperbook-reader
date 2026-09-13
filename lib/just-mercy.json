@@ -1,0 +1,215 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "just-mercy",
+  "title": "Just Mercy (Adapted for Young Adults)",
+  "author": "Bryan Stevenson",
+  "duration": 23761.026032,
+  "introEnd": 17.4,
+  "creditsStart": 23710.116599,
+  "markers": [
+    {
+      "title": "Opening Credits",
+      "start": 0.0,
+      "end": 33.529
+    },
+    {
+      "title": "Introduction",
+      "start": 33.529,
+      "end": 1540.829
+    },
+    {
+      "title": "Chapter One: Mockingbird Players",
+      "start": 1540.829,
+      "end": 2726.3
+    },
+    {
+      "title": "Chapter Two: Stand",
+      "start": 2726.3,
+      "end": 3995.316
+    },
+    {
+      "title": "Chapter Three: Trials and Tribulation",
+      "start": 3995.316,
+      "end": 5819.661
+    },
+    {
+      "title": "Chapter Four: The Old Rugged Cross",
+      "start": 5819.661,
+      "end": 6533.488
+    },
+    {
+      "title": "Chapter Five: Homeland",
+      "start": 6533.488,
+      "end": 8372.601
+    },
+    {
+      "title": "Chapter Six: Surely Doomed",
+      "start": 8372.601,
+      "end": 9508.567
+    },
+    {
+      "title": "Chapter Seven: Justice Denied",
+      "start": 9508.567,
+      "end": 11044.474
+    },
+    {
+      "title": "Chapter Eight: All God’s Children",
+      "start": 11044.474,
+      "end": 12612.61
+    },
+    {
+      "title": "Chapter Nine: I’m Here",
+      "start": 12612.61,
+      "end": 14667.993
+    },
+    {
+      "title": "Chapter Ten: Mitigation",
+      "start": 14667.993,
+      "end": 16108.187
+    },
+    {
+      "title": "Chapter Eleven: I’ll Fly Away",
+      "start": 16108.187,
+      "end": 17972.702
+    },
+    {
+      "title": "Chapter Twelve: Mother, Mother",
+      "start": 17972.702,
+      "end": 18768.96
+    },
+    {
+      "title": "Chapter Thirteen: Recovery",
+      "start": 18768.96,
+      "end": 19516.41
+    },
+    {
+      "title": "Chapter Fourteen: Cruel and Unusual",
+      "start": 19516.41,
+      "end": 20306.399
+    },
+    {
+      "title": "Chapter Fifteen: Broken",
+      "start": 20306.399,
+      "end": 21950.603
+    },
+    {
+      "title": "Chapter Sixteen: The Stonecatchers’ Song of Sorrow",
+      "start": 21950.603,
+      "end": 23236.477
+    },
+    {
+      "title": "Epilogue",
+      "start": 23236.477,
+      "end": 23710.117
+    },
+    {
+      "title": "End Credits",
+      "start": 23710.117,
+      "end": 23761.007
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Dedication",
+      "start": 17.4,
+      "end": 25.16
+    },
+    {
+      "title": "Epigraph",
+      "start": 25.16,
+      "end": 34.18
+    },
+    {
+      "title": "Introduction",
+      "start": 34.18,
+      "end": 1541.53
+    },
+    {
+      "title": "Chapter One: Mockingbird Players",
+      "start": 1541.53,
+      "end": 2726.78
+    },
+    {
+      "title": "Chapter Two: Stand",
+      "start": 2726.78,
+      "end": 3995.74
+    },
+    {
+      "title": "Chapter Three: Trials and Tribulation",
+      "start": 3995.74,
+      "end": 5820.31
+    },
+    {
+      "title": "Chapter Four: The Old Rugged Cross",
+      "start": 5820.31,
+      "end": 6533.95
+    },
+    {
+      "title": "Chapter Five: Homeland",
+      "start": 6533.95,
+      "end": 8373.04
+    },
+    {
+      "title": "Chapter Six: Surely Doomed",
+      "start": 8373.04,
+      "end": 9508.86
+    },
+    {
+      "title": "Chapter Seven: Justice Denied",
+      "start": 9508.86,
+      "end": 11044.49
+    },
+    {
+      "title": "Chapter Eight: All God’s Children",
+      "start": 11044.49,
+      "end": 12613.22
+    },
+    {
+      "title": "Chapter Nine: I’m Here",
+      "start": 12613.22,
+      "end": 14668.4
+    },
+    {
+      "title": "Chapter Ten: Mitigation",
+      "start": 14668.4,
+      "end": 16108.93
+    },
+    {
+      "title": "Chapter Eleven: I’ll Fly Away",
+      "start": 16108.93,
+      "end": 17973.13
+    },
+    {
+      "title": "Chapter Twelve: Mother, Mother",
+      "start": 17973.13,
+      "end": 18769.64
+    },
+    {
+      "title": "Chapter Thirteen: Recovery",
+      "start": 18769.64,
+      "end": 19516.79
+    },
+    {
+      "title": "Chapter Fourteen: Cruel and Unusual",
+      "start": 19516.79,
+      "end": 20307.02
+    },
+    {
+      "title": "Chapter Fifteen: Broken",
+      "start": 20307.02,
+      "end": 21951.05
+    },
+    {
+      "title": "Chapter Sixteen: The Stonecatchers’ Song of Sorrow",
+      "start": 21951.05,
+      "end": 23237.11
+    },
+    {
+      "title": "Epilogue",
+      "start": 23237.11,
+      "end": 23710.116599
+    }
+  ],
+  "assetRevision": "61dc697bfa388804"
+}

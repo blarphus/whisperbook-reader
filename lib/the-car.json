@@ -1,0 +1,275 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "the-car",
+  "title": "The Car",
+  "author": "Gary Paulsen",
+  "duration": 15451.90458,
+  "introEnd": 23.48,
+  "creditsStart": 15384.75,
+  "markers": [
+    {
+      "title": "Chapter 1",
+      "start": 0.0,
+      "end": 616.953968
+    },
+    {
+      "title": "Chapter 2",
+      "start": 616.953968,
+      "end": 1048.008934
+    },
+    {
+      "title": "Chapter 3",
+      "start": 1048.008934,
+      "end": 1474.048934
+    },
+    {
+      "title": "Chapter 4",
+      "start": 1474.048934,
+      "end": 2693.142902
+    },
+    {
+      "title": "Chapter 5",
+      "start": 2693.142902,
+      "end": 3061.178866
+    },
+    {
+      "title": "Chapter 6",
+      "start": 3061.178866,
+      "end": 3628.209841
+    },
+    {
+      "title": "Chapter 7",
+      "start": 3628.209841,
+      "end": 4043.242812
+    },
+    {
+      "title": "Chapter 8",
+      "start": 4043.242812,
+      "end": 4377.284807
+    },
+    {
+      "title": "Chapter 9",
+      "start": 4377.284807,
+      "end": 5026.328798
+    },
+    {
+      "title": "Chapter 10",
+      "start": 5026.328798,
+      "end": 5605.341769
+    },
+    {
+      "title": "Chapter 11",
+      "start": 5605.341769,
+      "end": 6587.406757
+    },
+    {
+      "title": "Chapter 12",
+      "start": 6587.406757,
+      "end": 7354.454739
+    },
+    {
+      "title": "Chapter 13",
+      "start": 7354.454739,
+      "end": 7618.511701
+    },
+    {
+      "title": "Chapter 14",
+      "start": 7618.511701,
+      "end": 8299.552698
+    },
+    {
+      "title": "Chapter 15",
+      "start": 8299.552698,
+      "end": 9251.570658
+    },
+    {
+      "title": "Chapter 16",
+      "start": 9251.570658,
+      "end": 9640.597642
+    },
+    {
+      "title": "Chapter 17",
+      "start": 9640.597642,
+      "end": 10202.659637
+    },
+    {
+      "title": "Chapter 18",
+      "start": 10202.659637,
+      "end": 11228.70263
+    },
+    {
+      "title": "Chapter 19",
+      "start": 11228.70263,
+      "end": 12286.74263
+    },
+    {
+      "title": "Chapter 20",
+      "start": 12286.74263,
+      "end": 13260.773605
+    },
+    {
+      "title": "Chapter 21",
+      "start": 13260.773605,
+      "end": 13854.832562
+    },
+    {
+      "title": "Chapter 22",
+      "start": 13854.832562,
+      "end": 15451.884989
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Opening passage",
+      "start": 23.48,
+      "end": 110.76
+    },
+    {
+      "title": "Dedication",
+      "start": 110.76,
+      "end": 113.94
+    },
+    {
+      "title": "The Car",
+      "start": 113.94,
+      "end": 117.21
+    },
+    {
+      "title": "Memories",
+      "start": 117.21,
+      "end": 167.63
+    },
+    {
+      "title": "1",
+      "start": 167.63,
+      "end": 617.24
+    },
+    {
+      "title": "2",
+      "start": 617.24,
+      "end": 1048.82
+    },
+    {
+      "title": "Memories",
+      "start": 1048.82,
+      "end": 1105.58
+    },
+    {
+      "title": "3",
+      "start": 1105.58,
+      "end": 1474.13
+    },
+    {
+      "title": "4",
+      "start": 1474.13,
+      "end": 2301.87
+    },
+    {
+      "title": "Memories",
+      "start": 2301.87,
+      "end": 2693.44
+    },
+    {
+      "title": "Waylon",
+      "start": 2693.44,
+      "end": 2695.24
+    },
+    {
+      "title": "5",
+      "start": 2695.24,
+      "end": 3062.2
+    },
+    {
+      "title": "The Ride",
+      "start": 3062.2,
+      "end": 3063.7
+    },
+    {
+      "title": "6",
+      "start": 3063.7,
+      "end": 3628.44
+    },
+    {
+      "title": "7",
+      "start": 3628.44,
+      "end": 4043.38
+    },
+    {
+      "title": "8",
+      "start": 4043.38,
+      "end": 4378.7
+    },
+    {
+      "title": "9",
+      "start": 4378.7,
+      "end": 5027.0
+    },
+    {
+      "title": "10",
+      "start": 5027.0,
+      "end": 5606.24
+    },
+    {
+      "title": "11",
+      "start": 5606.24,
+      "end": 6587.72
+    },
+    {
+      "title": "12",
+      "start": 6587.72,
+      "end": 7355.43
+    },
+    {
+      "title": "13",
+      "start": 7355.43,
+      "end": 7619.22
+    },
+    {
+      "title": "14",
+      "start": 7619.22,
+      "end": 8300.27
+    },
+    {
+      "title": "15",
+      "start": 8300.27,
+      "end": 9252.63
+    },
+    {
+      "title": "16",
+      "start": 9252.63,
+      "end": 9641.26
+    },
+    {
+      "title": "17",
+      "start": 9641.26,
+      "end": 10203.09
+    },
+    {
+      "title": "18",
+      "start": 10203.09,
+      "end": 11229.93
+    },
+    {
+      "title": "19",
+      "start": 11229.93,
+      "end": 12286.92
+    },
+    {
+      "title": "20",
+      "start": 12286.92,
+      "end": 13260.85
+    },
+    {
+      "title": "21",
+      "start": 13260.85,
+      "end": 13855.2
+    },
+    {
+      "title": "22",
+      "start": 13855.2,
+      "end": 15384.75
+    }
+  ],
+  "assetRevision": "9a25a93d1a172245"
+}

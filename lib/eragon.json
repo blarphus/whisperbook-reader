@@ -1,0 +1,625 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "eragon",
+  "title": "Eragon",
+  "author": "Christopher Paolini",
+  "duration": 58980.263764,
+  "introEnd": 19.52,
+  "creditsStart": 58934.002358,
+  "markers": [
+    {
+      "title": "Opening Credits",
+      "start": 0.0,
+      "end": 21.006984
+    },
+    {
+      "title": "Prologue: Shade of Fear",
+      "start": 21.006984,
+      "end": 533.964966
+    },
+    {
+      "title": "Discovery",
+      "start": 533.964966,
+      "end": 831.783946
+    },
+    {
+      "title": "Palancar Valley",
+      "start": 831.783946,
+      "end": 2045.095941
+    },
+    {
+      "title": "Dragon Tales",
+      "start": 2045.095941,
+      "end": 4138.907937
+    },
+    {
+      "title": "Fate’s Gift",
+      "start": 4138.907937,
+      "end": 4382.275918
+    },
+    {
+      "title": "Awakening",
+      "start": 4382.275918,
+      "end": 5479.324898
+    },
+    {
+      "title": "Tea for Two",
+      "start": 5479.324898,
+      "end": 6665.886893
+    },
+    {
+      "title": "A Name of Power",
+      "start": 6665.886893,
+      "end": 7028.558889
+    },
+    {
+      "title": "A Miller-to-Be",
+      "start": 7028.558889,
+      "end": 7304.364875
+    },
+    {
+      "title": "Strangers in Carvahall",
+      "start": 7304.364875,
+      "end": 8158.208866
+    },
+    {
+      "title": "Flight of Destiny",
+      "start": 8158.208866,
+      "end": 8712.37585
+    },
+    {
+      "title": "The Doom of Innocence",
+      "start": 8712.37585,
+      "end": 9480.30585
+    },
+    {
+      "title": "Deathwatch",
+      "start": 9480.30585,
+      "end": 10539.622834
+    },
+    {
+      "title": "The Madness of Life",
+      "start": 10539.622834,
+      "end": 10690.900816
+    },
+    {
+      "title": "A Rider’s Blade",
+      "start": 10690.900816,
+      "end": 12584.765805
+    },
+    {
+      "title": "Saddlemaking",
+      "start": 12584.765805,
+      "end": 12930.835805
+    },
+    {
+      "title": "Therinsford",
+      "start": 12930.835805,
+      "end": 14343.142789
+    },
+    {
+      "title": "Thunder Roar and Lightning Crackle",
+      "start": 14343.142789,
+      "end": 14989.074785
+    },
+    {
+      "title": "Revelation at Yazuac",
+      "start": 14989.074785,
+      "end": 15660.061769
+    },
+    {
+      "title": "Admonishments",
+      "start": 15660.061769,
+      "end": 16606.831769
+    },
+    {
+      "title": "Magic Is the Simplest Thing",
+      "start": 16606.831769,
+      "end": 17668.238753
+    },
+    {
+      "title": "Daret",
+      "start": 17668.238753,
+      "end": 18682.462744
+    },
+    {
+      "title": "Through a Dragon’s Eye",
+      "start": 18682.462744,
+      "end": 19635.54873
+    },
+    {
+      "title": "A Song for the Road",
+      "start": 19635.54873,
+      "end": 20029.776712
+    },
+    {
+      "title": "A Taste of Teirm",
+      "start": 20029.776712,
+      "end": 20691.289705
+    },
+    {
+      "title": "An Old Friend",
+      "start": 20691.289705,
+      "end": 23052.944694
+    },
+    {
+      "title": "The Witch and the Werecat",
+      "start": 23052.944694,
+      "end": 24532.473673
+    },
+    {
+      "title": "Of Reading and Plots",
+      "start": 24532.473673,
+      "end": 24788.078662
+    },
+    {
+      "title": "Thieves in the Castle",
+      "start": 24788.078662,
+      "end": 25765.057642
+    },
+    {
+      "title": "A Costly Mistake",
+      "start": 25765.057642,
+      "end": 27363.704626
+    },
+    {
+      "title": "Vision of Perfection",
+      "start": 27363.704626,
+      "end": 28027.214626
+    },
+    {
+      "title": "Master of the Blade",
+      "start": 28027.214626,
+      "end": 28754.81161
+    },
+    {
+      "title": "The Mire of Dras-Leona",
+      "start": 28754.81161,
+      "end": 29204.535601
+    },
+    {
+      "title": "Trail of Oil",
+      "start": 29204.535601,
+      "end": 29778.95059
+    },
+    {
+      "title": "Worshipers of Helgrind",
+      "start": 29778.95059,
+      "end": 30759.923583
+    },
+    {
+      "title": "The Ra’zac’s Revenge",
+      "start": 30759.923583,
+      "end": 31119.275578
+    },
+    {
+      "title": "Murtagh",
+      "start": 31119.275578,
+      "end": 31759.216576
+    },
+    {
+      "title": "Legacy of a Rider",
+      "start": 31759.216576,
+      "end": 32350.721565
+    },
+    {
+      "title": "Diamond Tomb",
+      "start": 32350.721565,
+      "end": 33226.856553
+    },
+    {
+      "title": "Capture at Gil’ead",
+      "start": 33226.856553,
+      "end": 34183.076553
+    },
+    {
+      "title": "Du Sundavar Freohr",
+      "start": 34183.076553,
+      "end": 35048.715533
+    },
+    {
+      "title": "Fighting Shadows",
+      "start": 35048.715533,
+      "end": 36155.703515
+    },
+    {
+      "title": "A Warrior and a Healer",
+      "start": 36155.703515,
+      "end": 37037.689501
+    },
+    {
+      "title": "Water from Sand",
+      "start": 37037.689501,
+      "end": 37892.160499
+    },
+    {
+      "title": "The Ramr River",
+      "start": 37892.160499,
+      "end": 38629.277483
+    },
+    {
+      "title": "The Hadarac Desert",
+      "start": 38629.277483,
+      "end": 39330.658481
+    },
+    {
+      "title": "A Path Revealed",
+      "start": 39330.658481,
+      "end": 40484.38746
+    },
+    {
+      "title": "A Clash of Wills",
+      "start": 40484.38746,
+      "end": 41226.891451
+    },
+    {
+      "title": "Flight Through the Valley",
+      "start": 41226.891451,
+      "end": 43009.510431
+    },
+    {
+      "title": "The Horns of a Dilemma",
+      "start": 43009.510431,
+      "end": 44101.010431
+    },
+    {
+      "title": "Hunting for Answers",
+      "start": 44101.010431,
+      "end": 45809.97542
+    },
+    {
+      "title": "The Glory of Tronjheim",
+      "start": 45809.97542,
+      "end": 46879.787415
+    },
+    {
+      "title": "Ajihad",
+      "start": 46879.787415,
+      "end": 49242.06941
+    },
+    {
+      "title": "Bless the Child, Argetlam",
+      "start": 49242.06941,
+      "end": 50872.922404
+    },
+    {
+      "title": "Mandrake Root and Newt’s Tongue",
+      "start": 50872.922404,
+      "end": 51567.779388
+    },
+    {
+      "title": "Hall of the Mountain King",
+      "start": 51567.779388,
+      "end": 53370.36737
+    },
+    {
+      "title": "Arya’s Test",
+      "start": 53370.36737,
+      "end": 55059.038367
+    },
+    {
+      "title": "The Shadows Lengthen",
+      "start": 55059.038367,
+      "end": 56528.118367
+    },
+    {
+      "title": "Battle Under Farthen Dûr",
+      "start": 56528.118367,
+      "end": 58110.720363
+    },
+    {
+      "title": "The Mourning Sage",
+      "start": 58110.720363,
+      "end": 58934.002358
+    },
+    {
+      "title": "End Credits",
+      "start": 58934.002358,
+      "end": 58980.218345
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Prologue: Shade of Fear",
+      "start": 19.52,
+      "end": 535.02
+    },
+    {
+      "title": "Discovery",
+      "start": 535.02,
+      "end": 832.12
+    },
+    {
+      "title": "Palancar Valley",
+      "start": 832.12,
+      "end": 2045.46
+    },
+    {
+      "title": "Dragon Tales",
+      "start": 2045.46,
+      "end": 4139.14
+    },
+    {
+      "title": "Fate’s Gift",
+      "start": 4139.14,
+      "end": 4382.73
+    },
+    {
+      "title": "Awakening",
+      "start": 4382.73,
+      "end": 5474.88
+    },
+    {
+      "title": "Tea for Two",
+      "start": 5474.88,
+      "end": 6665.74
+    },
+    {
+      "title": "A Name of Power",
+      "start": 6665.74,
+      "end": 7028.57
+    },
+    {
+      "title": "A Miller-to-Be",
+      "start": 7028.57,
+      "end": 7304.79
+    },
+    {
+      "title": "Strangers in Carvahall",
+      "start": 7304.79,
+      "end": 8158.4
+    },
+    {
+      "title": "Flight of Destiny",
+      "start": 8158.4,
+      "end": 8712.31
+    },
+    {
+      "title": "The Doom of Innocence",
+      "start": 8712.31,
+      "end": 9476.84
+    },
+    {
+      "title": "Deathwatch",
+      "start": 9476.84,
+      "end": 10539.48
+    },
+    {
+      "title": "The Madness of Life",
+      "start": 10539.48,
+      "end": 10691.01
+    },
+    {
+      "title": "A Rider’s Blade",
+      "start": 10691.01,
+      "end": 12581.1
+    },
+    {
+      "title": "Saddlemaking",
+      "start": 12581.1,
+      "end": 12931.25
+    },
+    {
+      "title": "Therinsford",
+      "start": 12931.25,
+      "end": 14343.4
+    },
+    {
+      "title": "Thunder Roar and Lightning Crackle",
+      "start": 14343.4,
+      "end": 14989.38
+    },
+    {
+      "title": "Revelation at Yazuac",
+      "start": 14989.38,
+      "end": 15660.79
+    },
+    {
+      "title": "Admonishments",
+      "start": 15660.79,
+      "end": 16607.12
+    },
+    {
+      "title": "Magic is the Simplest Thing",
+      "start": 16607.12,
+      "end": 17668.64
+    },
+    {
+      "title": "Daret",
+      "start": 17668.64,
+      "end": 18682.48
+    },
+    {
+      "title": "Through a Dragon’s Eye",
+      "start": 18682.48,
+      "end": 19635.4
+    },
+    {
+      "title": "A Song for the Road",
+      "start": 19635.4,
+      "end": 20029.7
+    },
+    {
+      "title": "A Taste of Teirm",
+      "start": 20029.7,
+      "end": 20691.18
+    },
+    {
+      "title": "An Old Friend",
+      "start": 20691.18,
+      "end": 23053.15
+    },
+    {
+      "title": "The Witch and the Werecat",
+      "start": 23053.15,
+      "end": 24532.31
+    },
+    {
+      "title": "Of Reading and Plots",
+      "start": 24532.31,
+      "end": 24788.38
+    },
+    {
+      "title": "Thieves in the Castle",
+      "start": 24788.38,
+      "end": 25764.95
+    },
+    {
+      "title": "A Costly Mistake",
+      "start": 25764.95,
+      "end": 27364.0
+    },
+    {
+      "title": "Vision of Perfection",
+      "start": 27364.0,
+      "end": 28027.57
+    },
+    {
+      "title": "Master of the Blade",
+      "start": 28027.57,
+      "end": 28755.04
+    },
+    {
+      "title": "The Mire of Dras-Leona",
+      "start": 28755.04,
+      "end": 29204.89
+    },
+    {
+      "title": "Trail of Oil",
+      "start": 29204.89,
+      "end": 29779.44
+    },
+    {
+      "title": "Worshipers of Helgrind",
+      "start": 29779.44,
+      "end": 30760.11
+    },
+    {
+      "title": "The Ra’zac’s Revenge",
+      "start": 30760.11,
+      "end": 31119.81
+    },
+    {
+      "title": "Murtagh",
+      "start": 31119.81,
+      "end": 31759.4
+    },
+    {
+      "title": "Legacy of a Rider",
+      "start": 31759.4,
+      "end": 32351.02
+    },
+    {
+      "title": "Diamond Tomb",
+      "start": 32351.02,
+      "end": 33227.02
+    },
+    {
+      "title": "Capture at Gil’ead",
+      "start": 33227.02,
+      "end": 34179.3
+    },
+    {
+      "title": "Du Sundavar Freohr",
+      "start": 34179.3,
+      "end": 35049.02
+    },
+    {
+      "title": "Fighting Shadows",
+      "start": 35049.02,
+      "end": 36155.55
+    },
+    {
+      "title": "A Warrior and a Healer",
+      "start": 36155.55,
+      "end": 37037.71
+    },
+    {
+      "title": "Water from Sand",
+      "start": 37037.71,
+      "end": 37892.21
+    },
+    {
+      "title": "The Ramr River",
+      "start": 37892.21,
+      "end": 38629.21
+    },
+    {
+      "title": "The Hadarac Desert",
+      "start": 38629.21,
+      "end": 39330.8
+    },
+    {
+      "title": "A Path Revealed",
+      "start": 39330.8,
+      "end": 40484.28
+    },
+    {
+      "title": "A Clash of Wills",
+      "start": 40484.28,
+      "end": 41227.22
+    },
+    {
+      "title": "Flight Through the Valley",
+      "start": 41227.22,
+      "end": 43009.44
+    },
+    {
+      "title": "The Horns of a Dilemma",
+      "start": 43009.44,
+      "end": 44101.08
+    },
+    {
+      "title": "Hunting for Answers",
+      "start": 44101.08,
+      "end": 45810.08
+    },
+    {
+      "title": "The Glory of Tronjheim",
+      "start": 45810.08,
+      "end": 46876.18
+    },
+    {
+      "title": "Ajihad",
+      "start": 46876.18,
+      "end": 49242.29
+    },
+    {
+      "title": "Bless the Child, Argetlam",
+      "start": 49242.29,
+      "end": 50873.46
+    },
+    {
+      "title": "Mandrake Root and Newt’s Tongue",
+      "start": 50873.46,
+      "end": 51567.82
+    },
+    {
+      "title": "Hall of the Mountain King",
+      "start": 51567.82,
+      "end": 53370.67
+    },
+    {
+      "title": "Arya’s Test",
+      "start": 53370.67,
+      "end": 55059.28
+    },
+    {
+      "title": "The Shadows Lengthen",
+      "start": 55059.28,
+      "end": 56528.25
+    },
+    {
+      "title": "Battle Under Farthen Dûr",
+      "start": 56528.25,
+      "end": 58110.8
+    },
+    {
+      "title": "The Mourning Sage",
+      "start": 58110.8,
+      "end": 58934.002358
+    }
+  ],
+  "assetRevision": "c4e53e76ab6230e0"
+}

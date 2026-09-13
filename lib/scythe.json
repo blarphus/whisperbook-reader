@@ -1,0 +1,470 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "scythe",
+  "title": "Scythe",
+  "author": "Neal Shusterman",
+  "duration": 37963.72898,
+  "introEnd": 12.12,
+  "creditsStart": 37934.15,
+  "markers": [
+    {
+      "title": "Opening Credits",
+      "start": 0.0,
+      "end": 12.12
+    },
+    {
+      "title": "Part One: Robe and Ring",
+      "start": 12.12,
+      "end": 117.76
+    },
+    {
+      "title": "Chapter 1: No Dimming of the Sun",
+      "start": 117.76,
+      "end": 1222.71
+    },
+    {
+      "title": "Chapter 2: .303%",
+      "start": 1222.71,
+      "end": 2566.42
+    },
+    {
+      "title": "Chapter 3: The Force of Destiny",
+      "start": 2566.42,
+      "end": 4162.08
+    },
+    {
+      "title": "Chapter 4: Learner's Permit to Kill",
+      "start": 4162.08,
+      "end": 4810.84
+    },
+    {
+      "title": "Chapter 5: \"But I'm Only Ninety-Six...\"",
+      "start": 4810.84,
+      "end": 5672.94
+    },
+    {
+      "title": "Part Two: No Laws Beyond These",
+      "start": 5672.94,
+      "end": 5834.26
+    },
+    {
+      "title": "Chapter 6: An Elegy of Scythes",
+      "start": 5834.26,
+      "end": 6594.67
+    },
+    {
+      "title": "Chapter 7: Killcraft",
+      "start": 6594.67,
+      "end": 7429.49
+    },
+    {
+      "title": "Chapter 8: A Matter of Choice",
+      "start": 7429.49,
+      "end": 8386.64
+    },
+    {
+      "title": "Chapter 9: Esme",
+      "start": 8386.64,
+      "end": 8799.25
+    },
+    {
+      "title": "Chapter 10: Forbidden Responses",
+      "start": 8799.25,
+      "end": 9589.69
+    },
+    {
+      "title": "Chapter 11: Indiscretions",
+      "start": 9589.69,
+      "end": 10317.14
+    },
+    {
+      "title": "Chapter 12: No Room for Mediocrity",
+      "start": 10317.14,
+      "end": 10822.12
+    },
+    {
+      "title": "Chapter 13: Vernal Conclave",
+      "start": 10822.12,
+      "end": 12779.92
+    },
+    {
+      "title": "Chapter 14: A Slight Stipulation",
+      "start": 12779.92,
+      "end": 13810.64
+    },
+    {
+      "title": "Chapter 15: The Space Between",
+      "start": 13810.64,
+      "end": 14375.69
+    },
+    {
+      "title": "Chapter 16: Pool Boy",
+      "start": 14375.69,
+      "end": 14904.93
+    },
+    {
+      "title": "Chapter 17: The Seventh Commandment",
+      "start": 14904.93,
+      "end": 15419.7
+    },
+    {
+      "title": "Part Three: The Old Guard and the New Order",
+      "start": 15419.7,
+      "end": 15475.12
+    },
+    {
+      "title": "Chapter 18: Falling Water",
+      "start": 15475.12,
+      "end": 16846.09
+    },
+    {
+      "title": "Chapter 19: A Terrible Thing to Do",
+      "start": 16846.09,
+      "end": 17755.66
+    },
+    {
+      "title": "Chapter 20: Guest of Honor",
+      "start": 17755.66,
+      "end": 18565.16
+    },
+    {
+      "title": "Chapter 21: Branded",
+      "start": 18565.16,
+      "end": 19284.98
+    },
+    {
+      "title": "Chapter 22: Sign of the Bident",
+      "start": 19284.98,
+      "end": 20129.47
+    },
+    {
+      "title": "Chapter 23: The Virtual Rabbit Hole",
+      "start": 20129.47,
+      "end": 20960.38
+    },
+    {
+      "title": "Chapter 24: An Embarrassment to Who and What We Are",
+      "start": 20960.38,
+      "end": 22117.23
+    },
+    {
+      "title": "Chapter 25: Proxy of Death",
+      "start": 22117.23,
+      "end": 23048.53
+    },
+    {
+      "title": "Chapter 26: Not Like the Others",
+      "start": 23048.53,
+      "end": 23874.46
+    },
+    {
+      "title": "Chapter 27: Harvest Conclave",
+      "start": 23874.46,
+      "end": 26002.49
+    },
+    {
+      "title": "Chapter 28: Hydrogen Burning in the Heart of the Sun",
+      "start": 26002.49,
+      "end": 28131.88
+    },
+    {
+      "title": "Chapter 29: They Called It Prison",
+      "start": 28131.88,
+      "end": 29341.7
+    },
+    {
+      "title": "Part Four: Midmerican Fugitive",
+      "start": 29341.7,
+      "end": 29346.4
+    },
+    {
+      "title": "Chapter 30: Dialogue with the Dead",
+      "start": 29346.4,
+      "end": 29766.07
+    },
+    {
+      "title": "Chapter 31: A Streak of Unrelenting Foolishness",
+      "start": 29766.07,
+      "end": 31359.06
+    },
+    {
+      "title": "Chapter 32: Troubled Pilgrimage",
+      "start": 31359.06,
+      "end": 32406.4
+    },
+    {
+      "title": "Chapter 33: Both the Messenger and the Message",
+      "start": 32406.4,
+      "end": 32740.26
+    },
+    {
+      "title": "Chapter 34: The Second Most Painful Thing You'll Ever Have to Do",
+      "start": 32740.26,
+      "end": 33255.61
+    },
+    {
+      "title": "Chapter 35: Obliteration Is Our Hallmark",
+      "start": 33255.61,
+      "end": 34078.84
+    },
+    {
+      "title": "Chapter 36: The Thirteenth Kill",
+      "start": 34078.84,
+      "end": 34795.49
+    },
+    {
+      "title": "Part Five: Scythehood",
+      "start": 34795.49,
+      "end": 34849.73
+    },
+    {
+      "title": "Chapter 37: Shaking the Tree",
+      "start": 34849.73,
+      "end": 35341.24
+    },
+    {
+      "title": "Chapter 38: The Final Test",
+      "start": 35341.24,
+      "end": 36149.98
+    },
+    {
+      "title": "Chapter 39: Winter Conclave",
+      "start": 36149.98,
+      "end": 37053.22
+    },
+    {
+      "title": "Chapter 40: The Ordained",
+      "start": 37053.22,
+      "end": 37963.729
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Part One: Robe and Ring",
+      "start": 12.12,
+      "end": 117.76
+    },
+    {
+      "title": "Chapter 1: No Dimming of the Sun",
+      "start": 117.76,
+      "end": 1222.71
+    },
+    {
+      "title": "Chapter 2: .303 %",
+      "start": 1222.71,
+      "end": 2566.42
+    },
+    {
+      "title": "Chapter 3: The Force of Destiny",
+      "start": 2566.42,
+      "end": 4162.08
+    },
+    {
+      "title": "Chapter 4: Learner’s Permit to Kill",
+      "start": 4162.08,
+      "end": 4810.84
+    },
+    {
+      "title": "Chapter 5: “But I’m Only Ninety-Six . . .”",
+      "start": 4810.84,
+      "end": 5672.94
+    },
+    {
+      "title": "Part Two: No Laws Beyond These",
+      "start": 5672.94,
+      "end": 5834.26
+    },
+    {
+      "title": "Chapter 6: An Elegy of Scythes",
+      "start": 5834.26,
+      "end": 6594.67
+    },
+    {
+      "title": "Chapter 7: Killcraft",
+      "start": 6594.67,
+      "end": 7429.49
+    },
+    {
+      "title": "Chapter 8: A Matter of Choice",
+      "start": 7429.49,
+      "end": 8386.64
+    },
+    {
+      "title": "Chapter 9: Esme",
+      "start": 8386.64,
+      "end": 8799.25
+    },
+    {
+      "title": "Chapter 10: Forbidden Responses",
+      "start": 8799.25,
+      "end": 9589.69
+    },
+    {
+      "title": "Chapter 11: Indiscretions",
+      "start": 9589.69,
+      "end": 10317.14
+    },
+    {
+      "title": "Chapter 12: No Room for Mediocrity",
+      "start": 10317.14,
+      "end": 10822.12
+    },
+    {
+      "title": "Chapter 13: Vernal Conclave",
+      "start": 10822.12,
+      "end": 12779.92
+    },
+    {
+      "title": "Chapter 14: A Slight Stipulation",
+      "start": 12779.92,
+      "end": 13810.64
+    },
+    {
+      "title": "Chapter 15: The Space Between",
+      "start": 13810.64,
+      "end": 14375.69
+    },
+    {
+      "title": "Chapter 16: Pool Boy",
+      "start": 14375.69,
+      "end": 14904.93
+    },
+    {
+      "title": "Chapter 17: The Seventh Commandment",
+      "start": 14904.93,
+      "end": 15419.7
+    },
+    {
+      "title": "Part Three: The Old Guard and the New Order",
+      "start": 15419.7,
+      "end": 15475.12
+    },
+    {
+      "title": "Chapter 18: Falling Water",
+      "start": 15475.12,
+      "end": 16846.09
+    },
+    {
+      "title": "Chapter 19: A Terrible Thing to Do",
+      "start": 16846.09,
+      "end": 17755.66
+    },
+    {
+      "title": "Chapter 20: Guest of Honor",
+      "start": 17755.66,
+      "end": 18565.16
+    },
+    {
+      "title": "Chapter 21: Branded",
+      "start": 18565.16,
+      "end": 19284.98
+    },
+    {
+      "title": "Chapter 22: Sign of the Bident",
+      "start": 19284.98,
+      "end": 20129.47
+    },
+    {
+      "title": "Chapter 23: The Virtual Rabbit Hole",
+      "start": 20129.47,
+      "end": 20960.38
+    },
+    {
+      "title": "Chapter 24: An Embarrassment to Who and What We Are",
+      "start": 20960.38,
+      "end": 22117.23
+    },
+    {
+      "title": "Chapter 25: Proxy of Death",
+      "start": 22117.23,
+      "end": 23048.53
+    },
+    {
+      "title": "Chapter 26: Not Like the Others",
+      "start": 23048.53,
+      "end": 23874.46
+    },
+    {
+      "title": "Chapter 27: Harvest Conclave",
+      "start": 23874.46,
+      "end": 26002.49
+    },
+    {
+      "title": "Chapter 28: Hydrogen Burning in the Heart of the Sun",
+      "start": 26002.49,
+      "end": 28131.88
+    },
+    {
+      "title": "Chapter 29: They Called It Prison",
+      "start": 28131.88,
+      "end": 29341.7
+    },
+    {
+      "title": "Part Four: MidMerican Fugitive",
+      "start": 29341.7,
+      "end": 29346.4
+    },
+    {
+      "title": "Chapter 30: Dialogue with the Dead",
+      "start": 29346.4,
+      "end": 29766.07
+    },
+    {
+      "title": "Chapter 31: A Streak of Unrelenting Foolishness",
+      "start": 29766.07,
+      "end": 31359.06
+    },
+    {
+      "title": "Chapter 32: Troubled Pilgrimage",
+      "start": 31359.06,
+      "end": 32406.4
+    },
+    {
+      "title": "Chapter 33: Both the Messenger and the Message",
+      "start": 32406.4,
+      "end": 32740.26
+    },
+    {
+      "title": "Chapter 34: The Second Most Painful Thing You’ll Ever Have to Do",
+      "start": 32740.26,
+      "end": 33255.61
+    },
+    {
+      "title": "Chapter 35: Obliteration Is Our Hallmark",
+      "start": 33255.61,
+      "end": 34078.84
+    },
+    {
+      "title": "Chapter 36: The Thirteenth Kill",
+      "start": 34078.84,
+      "end": 34795.49
+    },
+    {
+      "title": "Part Five: Scythehood",
+      "start": 34795.49,
+      "end": 34849.73
+    },
+    {
+      "title": "Chapter 37: Shaking the Tree",
+      "start": 34849.73,
+      "end": 35341.24
+    },
+    {
+      "title": "Chapter 38: The Final Test",
+      "start": 35341.24,
+      "end": 36149.98
+    },
+    {
+      "title": "Chapter 39: Winter Conclave",
+      "start": 36149.98,
+      "end": 37053.22
+    },
+    {
+      "title": "Chapter 40: The Ordained",
+      "start": 37053.22,
+      "end": 37934.15
+    }
+  ],
+  "assetRevision": "ccc34465f697d19c"
+}

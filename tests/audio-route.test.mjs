@@ -41,3 +41,11 @@ test('invalid ranges do not reach Drive and unsatisfiable ranges stay 416',async
   assert.equal(response.status,416);
   assert.equal(response.headers.get('content-range'),'bytes */773787995');
 });
+
+test('only configured books and assets can reach Drive',async t=>{
+ t.mock.method(globalThis,'fetch',async()=>{throw Error('Unexpected fetch')});
+ for(const url of ['https://reader.test/api/book/audio?book=unknown','https://reader.test/api/book/audio?book=__proto__','https://reader.test/api/book/constructor']){
+  const asset=new URL(url).pathname.split('/').pop();
+  assert.equal((await GET(new Request(url),{params:Promise.resolve({asset})})).status,404);
+ }
+});
