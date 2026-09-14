@@ -86,6 +86,20 @@ def transcript_section(title, words):
     if sentence_start<len(cues):sentences.append([sentence_start,len(cues)])
     return dict(title=title,html='<div class="chapter-text"><p>'+''.join(pieces)+'</p></div>',cues=cues,sentences=sentences,start=cues[0][0],end=cues[-1][1])
 
+def interlace_transcript_sections(chapters, cues, supplements):
+    """Insert reviewed sections in audio order without altering EPUB words."""
+    entries=[];offset=0
+    for chapter in chapters:
+        count=len(chapter['cues'])
+        entries.append((chapter,cues[offset:offset+count]));offset+=count
+    assert offset==len(cues), 'EPUB cue count mismatch'
+    for section in supplements:
+        entries.append((section,[[a,b,'transcript'] for a,b in section['cues']]))
+    entries.sort(key=lambda item:item[0]['start'])
+    for (left,_),(right,_) in zip(entries,entries[1:]):
+        assert left['cues'][-1][1]<=right['cues'][0][0], 'Transcript supplement overlaps narrated EPUB text'
+    return [item[0] for item in entries],[cue for _,part in entries for cue in part]
+
 def write_opening_reader_epub(source, destination, supplements, before_resource):
     """Insert reviewed opening pages while retaining all original EPUB resources."""
     with zipfile.ZipFile(source) as archive:
@@ -214,6 +228,41 @@ def extract(epub:Path):
     return sections
 
 
+def recover_compound_cues(words, asr, mapped, cues):
+    """Join complete ASR tokens only inside exact, already anchored text gaps."""
+    repairs=[]
+    anchors=sorted(mapped)
+    for left,right in zip(anchors,anchors[1:]):
+        if right<=left+1 or right-left>9:
+            continue
+        first=mapped[left].asr_index+1;last=mapped[right].asr_index
+        if not first<last or last-first>24:
+            continue
+        chunk=asr[first:last]
+        if chunk[-1].end-chunk[0].start>12 or min(w.probability for w in chunk)<.5:
+            continue
+        candidate=[];cursor=0
+        for index in range(left+1,right):
+            begin=cursor;normalized=''
+            while cursor<len(chunk) and len(normalized)<len(words[index].norm):
+                normalized+=chunk[cursor].norm;cursor+=1
+            if normalized!=words[index].norm:
+                break
+            candidate.append((index,chunk[begin:cursor]))
+        if len(candidate)!=right-left-1 or cursor!=len(chunk):
+            continue
+        if chunk[0].start<cues[left][1] or chunk[-1].end>cues[right][0]:
+            continue
+        for index,tokens in candidate:
+            if tokens[0].start>=tokens[-1].end:
+                break
+        else:
+            for index,tokens in candidate:
+                previous=cues[index][:]
+                cues[index]=[tokens[0].start,tokens[-1].end,'compound-exact',min(t.probability for t in tokens)]
+                repairs.append(dict(word=index,epub=words[index].text,transcript=[t.text for t in tokens],previous=previous[:2],verified=cues[index][:2]))
+    return repairs
+
 def prepare_alignment(book,sections,transcript,probe,output):
     body_ranges={'the-car':(3,32),'just-mercy':(5,23),'eragon':(5,65),'scythe':(2,47),'the-martian':(3,29),'project-hail-mary':(4,34)}
     left,right=body_ranges[book['id']]
@@ -244,6 +293,9 @@ def prepare_alignment(book,sections,transcript,probe,output):
     stats['matched_words']+=len(alias_matches)
     stats['reviewed_alias_matches']=len(alias_matches)
     cues,cue_stats=build_cues(words,asr,mapped,book['duration'])
+    compound_repairs=recover_compound_cues(words,asr,mapped,cues)
+    stats['matched_words']+=len(compound_repairs)
+    stats['compound_exact_matches']=len(compound_repairs)
     # Printed chapter numerals can be separate spoken number words in the ASR.
     # Match only inside the already-anchored gap before the first prose word.
     number_names=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen']
@@ -325,13 +377,13 @@ def prepare_alignment(book,sections,transcript,probe,output):
         assert supplement_data['sourceAudioSha256']==book['sha256'], 'Supplement recording mismatch'
         for item in supplement_data['sections']:
             section=transcript_section(item['title'],item['words'])
-            assert section['end']<=chapters[0]['start'], 'Opening supplement overlaps EPUB narration'
             supplements.append(section)
         supplements.sort(key=lambda c:c['start'])
         assert all(a['end']<=b['start'] for a,b in zip(supplements,supplements[1:])), 'Supplements overlap'
-        chapters=supplements+chapters
-        cues=[[a,b,'transcript'] for s in supplements for a,b in s['cues']]+cues
-        write_opening_reader_epub(Path(book['epub']),output/(book['title']+' - Reader Edition.epub'),supplements,selected[0]['resources'][0])
+        opening_only=all(s['end']<=chapters[0]['start'] for s in supplements)
+        chapters,cues=interlace_transcript_sections(chapters,cues,supplements)
+        if opening_only:
+            write_opening_reader_epub(Path(book['epub']),output/(book['title']+' - Reader Edition.epub'),supplements,selected[0]['resources'][0])
     for a,b in zip(chapters,chapters[1:]):a['end']=b['start']
     markers=[dict(title=c['tags']['title'],start=float(c['start_time']),end=float(c['end_time'])) for c in probe.get('chapters',[])]
     credits=next((m['start'] for m in markers if 'closing credit' in m['title'].lower() or 'end credit' in m['title'].lower()),book['duration'])
@@ -344,6 +396,7 @@ def prepare_alignment(book,sections,transcript,probe,output):
     report['spokenHeadingRepairs']=heading_repairs
     report['reviewedAliasMatches']=alias_matches
     report['reviewedTimingRepairs']=timing_repairs
+    report['compoundExactRepairs']=compound_repairs
     (output/'alignment-review.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
     (output/(book['id']+'.alignment.json')).write_text(json.dumps(dict(book=book['id'],timebase='seconds from start of source audiobook',cues=cues,stats=stats),ensure_ascii=False))
     packed=json.dumps(data,ensure_ascii=False,separators=(',',':')).encode()

@@ -1,0 +1,955 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "the-martian",
+  "title": "The Martian",
+  "author": "Andy Weir",
+  "duration": 40782.493016,
+  "introEnd": 27.48,
+  "creditsStart": 40712.28,
+  "markers": [
+    {
+      "title": "Opening Credits",
+      "start": 0.0,
+      "end": 27.08
+    },
+    {
+      "title": "Chapter 1",
+      "start": 27.08,
+      "end": 29.82
+    },
+    {
+      "title": "Log Entry: Sol 6",
+      "start": 29.82,
+      "end": 821.31
+    },
+    {
+      "title": "Chapter 2",
+      "start": 821.31,
+      "end": 825.51
+    },
+    {
+      "title": "Log Entry: Sol 7",
+      "start": 825.51,
+      "end": 1176.85
+    },
+    {
+      "title": "Log Entry: Sol 10",
+      "start": 1176.85,
+      "end": 1358.57
+    },
+    {
+      "title": "Log Entry: Sol 11",
+      "start": 1358.57,
+      "end": 1365.43
+    },
+    {
+      "title": "Log Entry: Sol 14",
+      "start": 1365.43,
+      "end": 1597.46
+    },
+    {
+      "title": "Log Entry: Sol 15",
+      "start": 1597.46,
+      "end": 1666.66
+    },
+    {
+      "title": "Log Entry: Sol 16",
+      "start": 1666.66,
+      "end": 1820.41
+    },
+    {
+      "title": "Log Entry: Sol 22",
+      "start": 1820.41,
+      "end": 1944.0
+    },
+    {
+      "title": "Chapter 3",
+      "start": 1944.0,
+      "end": 1948.15
+    },
+    {
+      "title": "Log Entry: Sol 25",
+      "start": 1948.15,
+      "end": 2252.0
+    },
+    {
+      "title": "Log Entry: Sol 26",
+      "start": 2252.0,
+      "end": 2435.53
+    },
+    {
+      "title": "Log Entry: Sol 29",
+      "start": 2435.53,
+      "end": 2645.43
+    },
+    {
+      "title": "Log Entry: Sol 30",
+      "start": 2645.43,
+      "end": 3021.84
+    },
+    {
+      "title": "Chapter 4",
+      "start": 3021.84,
+      "end": 3025.66
+    },
+    {
+      "title": "Log Entry: Sol 32",
+      "start": 3025.66,
+      "end": 3235.81
+    },
+    {
+      "title": "Log Entry: Sol 33",
+      "start": 3235.81,
+      "end": 3362.0
+    },
+    {
+      "title": "Log Entry: Sol 33 (2)",
+      "start": 3362.0,
+      "end": 3647.0
+    },
+    {
+      "title": "Log Entry: Sol 34",
+      "start": 3647.0,
+      "end": 3750.23
+    },
+    {
+      "title": "Log Entry: Sol 37",
+      "start": 3750.23,
+      "end": 3989.0
+    },
+    {
+      "title": "Chapter 5",
+      "start": 3989.0,
+      "end": 3993.48
+    },
+    {
+      "title": "Log Entry: Sol 38",
+      "start": 3993.48,
+      "end": 4144.25
+    },
+    {
+      "title": "Log Entry: Sol 38 (2)",
+      "start": 4144.25,
+      "end": 4153.56
+    },
+    {
+      "title": "Log Entry: Sol 39",
+      "start": 4153.56,
+      "end": 4255.25
+    },
+    {
+      "title": "Log Entry: Sol 40",
+      "start": 4255.25,
+      "end": 4748.0
+    },
+    {
+      "title": "Log Entry: Sol 41",
+      "start": 4748.0,
+      "end": 5035.0
+    },
+    {
+      "title": "Log Entry: Sol 42",
+      "start": 5035.0,
+      "end": 5134.0
+    },
+    {
+      "title": "Chapter 6",
+      "start": 5134.0,
+      "end": 6741.97
+    },
+    {
+      "title": "Log Entry: Sol 61",
+      "start": 6741.97,
+      "end": 6754.87
+    },
+    {
+      "title": "Chapter 7",
+      "start": 6754.87,
+      "end": 6759.0
+    },
+    {
+      "title": "Log Entry: Sol 63",
+      "start": 6759.0,
+      "end": 7104.0
+    },
+    {
+      "title": "Log Entry: Sol 64",
+      "start": 7104.0,
+      "end": 7279.05
+    },
+    {
+      "title": "Log Entry: Sol 65",
+      "start": 7279.05,
+      "end": 7474.18
+    },
+    {
+      "title": "Log Entry: Sol 66",
+      "start": 7474.18,
+      "end": 7531.43
+    },
+    {
+      "title": "Log Entry: Sol 67",
+      "start": 7531.43,
+      "end": 7652.93
+    },
+    {
+      "title": "Log Entry: Sol 68",
+      "start": 7652.93,
+      "end": 7894.84
+    },
+    {
+      "title": "Log Entry: Sol 69",
+      "start": 7894.84,
+      "end": 8096.2
+    },
+    {
+      "title": "Log Entry: Sol 70",
+      "start": 8096.2,
+      "end": 8211.74
+    },
+    {
+      "title": "Log Entry: Sol 71",
+      "start": 8211.74,
+      "end": 8428.36
+    },
+    {
+      "title": "Chapter 8",
+      "start": 8428.36,
+      "end": 10006.02
+    },
+    {
+      "title": "Chapter 9",
+      "start": 10006.02,
+      "end": 10010.0
+    },
+    {
+      "title": "Log Entry: Sol 79",
+      "start": 10010.0,
+      "end": 10232.69
+    },
+    {
+      "title": "Log Entry: Sol 80",
+      "start": 10232.69,
+      "end": 10402.0
+    },
+    {
+      "title": "Log Entry: Sol 81",
+      "start": 10402.0,
+      "end": 10585.0
+    },
+    {
+      "title": "Log Entry: Sol 82",
+      "start": 10585.0,
+      "end": 10912.0
+    },
+    {
+      "title": "Log Entry: Sol 83",
+      "start": 10912.0,
+      "end": 11055.0
+    },
+    {
+      "title": "Chapter 10",
+      "start": 11055.0,
+      "end": 11059.0
+    },
+    {
+      "title": "Log Entry: Sol 90",
+      "start": 11059.0,
+      "end": 11156.25
+    },
+    {
+      "title": "Log Entry: Sol 92",
+      "start": 11156.25,
+      "end": 11224.0
+    },
+    {
+      "title": "Log Entry: Sol 93",
+      "start": 11224.0,
+      "end": 11319.53
+    },
+    {
+      "title": "Log Entry: Sol 94",
+      "start": 11319.53,
+      "end": 11496.61
+    },
+    {
+      "title": "Log Entry: Sol 95",
+      "start": 11496.61,
+      "end": 11736.66
+    },
+    {
+      "title": "Log Entry: Sol 96",
+      "start": 11736.66,
+      "end": 11916.77
+    },
+    {
+      "title": "Chapter 11",
+      "start": 11916.77,
+      "end": 12060.0
+    },
+    {
+      "title": "Log Entry: Sol 97",
+      "start": 12060.0,
+      "end": 12401.12
+    },
+    {
+      "title": "Log Entry: Sol 97 (2)",
+      "start": 12401.12,
+      "end": 13108.97
+    },
+    {
+      "title": "Log Entry: Sol 98",
+      "start": 13108.97,
+      "end": 13479.25
+    },
+    {
+      "title": "Log Entry: Sol 98 (2)",
+      "start": 13479.25,
+      "end": 13903.61
+    },
+    {
+      "title": "Chapter 12",
+      "start": 13903.61,
+      "end": 15308.0
+    },
+    {
+      "title": "Chapter 13",
+      "start": 15308.0,
+      "end": 15345.66
+    },
+    {
+      "title": "Log Entry: Sol 114",
+      "start": 15345.66,
+      "end": 15534.11
+    },
+    {
+      "title": "Log Entry: Sol 115",
+      "start": 15534.11,
+      "end": 15707.28
+    },
+    {
+      "title": "Log Entry: Sol 116",
+      "start": 15707.28,
+      "end": 15913.0
+    },
+    {
+      "title": "Log Entry: Sol 117",
+      "start": 15913.0,
+      "end": 16078.1
+    },
+    {
+      "title": "Log Entry: Sol 118",
+      "start": 16078.1,
+      "end": 16290.3
+    },
+    {
+      "title": "Log Entry: Sol 119",
+      "start": 16290.3,
+      "end": 16555.33
+    },
+    {
+      "title": "Chapter 14",
+      "start": 16555.33,
+      "end": 16559.38
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119",
+      "start": 16559.38,
+      "end": 16595.43
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (2)",
+      "start": 16595.43,
+      "end": 16664.55
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (3)",
+      "start": 16664.55,
+      "end": 16859.37
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (4)",
+      "start": 16859.37,
+      "end": 17029.86
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (5)",
+      "start": 17029.86,
+      "end": 17168.37
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (6)",
+      "start": 17168.37,
+      "end": 17379.06
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (7)",
+      "start": 17379.06,
+      "end": 17489.78
+    },
+    {
+      "title": "Audio Log Transcript: Sol 119 (8)",
+      "start": 17489.78,
+      "end": 17559.1
+    },
+    {
+      "title": "Audio Log Transcript: Sol 120",
+      "start": 17559.1,
+      "end": 17640.24
+    },
+    {
+      "title": "Log Entry: Sol 120",
+      "start": 17640.24,
+      "end": 17860.15
+    },
+    {
+      "title": "Log Entry: Sol 121",
+      "start": 17860.15,
+      "end": 17971.93
+    },
+    {
+      "title": "Log Entry: Sol 122",
+      "start": 17971.93,
+      "end": 18136.33
+    },
+    {
+      "title": "Chapter 15",
+      "start": 18136.33,
+      "end": 20270.87
+    },
+    {
+      "title": "Chapter 16",
+      "start": 20270.87,
+      "end": 22744.35
+    },
+    {
+      "title": "Chapter 17",
+      "start": 22744.35,
+      "end": 22748.52
+    },
+    {
+      "title": "Log Entry: Sol 192",
+      "start": 22748.52,
+      "end": 23059.02
+    },
+    {
+      "title": "Log Entry: Sol 193",
+      "start": 23059.02,
+      "end": 23480.5
+    },
+    {
+      "title": "Log Entry: Sol 194",
+      "start": 23480.5,
+      "end": 23595.28
+    },
+    {
+      "title": "Log Entry: Sol 195",
+      "start": 23595.28,
+      "end": 23688.53
+    },
+    {
+      "title": "Log Entry: Sol 196",
+      "start": 23688.53,
+      "end": 24145.84
+    },
+    {
+      "title": "Chapter 18",
+      "start": 24145.84,
+      "end": 24149.94
+    },
+    {
+      "title": "Log Entry: Sol 197",
+      "start": 24149.94,
+      "end": 24313.07
+    },
+    {
+      "title": "Log Entry: Sol 198",
+      "start": 24313.07,
+      "end": 24457.78
+    },
+    {
+      "title": "Log Entry: Sol 199",
+      "start": 24457.78,
+      "end": 24654.59
+    },
+    {
+      "title": "Log Entry: Sol 200",
+      "start": 24654.59,
+      "end": 24810.96
+    },
+    {
+      "title": "Log Entry: Sol 201",
+      "start": 24810.96,
+      "end": 24995.37
+    },
+    {
+      "title": "Log Entry: Sol 207",
+      "start": 24995.37,
+      "end": 25156.95
+    },
+    {
+      "title": "Log Entry: Sol 208",
+      "start": 25156.95,
+      "end": 25346.41
+    },
+    {
+      "title": "Log Entry: Sol 209",
+      "start": 25346.41,
+      "end": 25493.27
+    },
+    {
+      "title": "Log Entry: Sol 211",
+      "start": 25493.27,
+      "end": 25697.49
+    },
+    {
+      "title": "Chapter 19",
+      "start": 25697.49,
+      "end": 27080.13
+    },
+    {
+      "title": "Chapter 20",
+      "start": 27080.13,
+      "end": 27084.33
+    },
+    {
+      "title": "Log Entry: Sol 376",
+      "start": 27084.33,
+      "end": 27231.64
+    },
+    {
+      "title": "Log Entry: Sol 380",
+      "start": 27231.64,
+      "end": 27369.61
+    },
+    {
+      "title": "Log Entry: Sol 381",
+      "start": 27369.61,
+      "end": 27440.21
+    },
+    {
+      "title": "Log Entry: Sol 383",
+      "start": 27440.21,
+      "end": 27550.8
+    },
+    {
+      "title": "Log Entry: Sol 385",
+      "start": 27550.8,
+      "end": 27704.81
+    },
+    {
+      "title": "Log Entry: Sol 387",
+      "start": 27704.81,
+      "end": 27884.6
+    },
+    {
+      "title": "Log Entry: Sol 388",
+      "start": 27884.6,
+      "end": 28113.12
+    },
+    {
+      "title": "Log Entry: Sol 389",
+      "start": 28113.12,
+      "end": 28327.28
+    },
+    {
+      "title": "Log Entry: Sol 390",
+      "start": 28327.28,
+      "end": 28439.29
+    },
+    {
+      "title": "Chapter 21",
+      "start": 28439.29,
+      "end": 28443.76
+    },
+    {
+      "title": "Log Entry: Sol 431",
+      "start": 28443.76,
+      "end": 28737.18
+    },
+    {
+      "title": "Log Entry: Sol 434",
+      "start": 28737.18,
+      "end": 28948.22
+    },
+    {
+      "title": "Log Entry: Sol 435",
+      "start": 28948.22,
+      "end": 29084.12
+    },
+    {
+      "title": "Log Entry: Sol 436",
+      "start": 29084.12,
+      "end": 29447.98
+    },
+    {
+      "title": "Log Entry: Sol 439",
+      "start": 29447.98,
+      "end": 29762.12
+    },
+    {
+      "title": "Log Entry: Sol 444",
+      "start": 29762.12,
+      "end": 30053.46
+    },
+    {
+      "title": "Log Entry: Sol 449",
+      "start": 30053.46,
+      "end": 30260.0
+    },
+    {
+      "title": "Chapter 22",
+      "start": 30260.0,
+      "end": 30264.36
+    },
+    {
+      "title": "Log Entry: Sol 458",
+      "start": 30264.36,
+      "end": 30544.48
+    },
+    {
+      "title": "Log Entry: Sol 462",
+      "start": 30544.48,
+      "end": 30799.97
+    },
+    {
+      "title": "Log Entry: Sol 466",
+      "start": 30799.97,
+      "end": 30954.07
+    },
+    {
+      "title": "Log Entry: Sol 468",
+      "start": 30954.07,
+      "end": 31160.14
+    },
+    {
+      "title": "Log Entry: Sol 473",
+      "start": 31160.14,
+      "end": 31283.32
+    },
+    {
+      "title": "Log Entry: Sol 474",
+      "start": 31283.32,
+      "end": 31372.93
+    },
+    {
+      "title": "Log Entry: Sol 475",
+      "start": 31372.93,
+      "end": 31667.37
+    },
+    {
+      "title": "Chapter 23",
+      "start": 31667.37,
+      "end": 31671.67
+    },
+    {
+      "title": "Log Entry: Sol 476",
+      "start": 31671.67,
+      "end": 31892.03
+    },
+    {
+      "title": "Log Entry: Sol 477",
+      "start": 31892.03,
+      "end": 32084.28
+    },
+    {
+      "title": "Log Entry: Sol 478",
+      "start": 32084.28,
+      "end": 32175.24
+    },
+    {
+      "title": "Log Entry: Sol 479",
+      "start": 32175.24,
+      "end": 32259.58
+    },
+    {
+      "title": "Log Entry: Sol 480",
+      "start": 32259.58,
+      "end": 32359.67
+    },
+    {
+      "title": "Log Entry: Sol 482",
+      "start": 32359.67,
+      "end": 32439.55
+    },
+    {
+      "title": "Log Entry: Sol 484",
+      "start": 32439.55,
+      "end": 32517.84
+    },
+    {
+      "title": "Log Entry: Sol 487",
+      "start": 32517.84,
+      "end": 32604.67
+    },
+    {
+      "title": "Log Entry: Sol 492",
+      "start": 32604.67,
+      "end": 32808.21
+    },
+    {
+      "title": "Log Entry: Sol 497",
+      "start": 32808.21,
+      "end": 33106.29
+    },
+    {
+      "title": "Chapter 24",
+      "start": 33106.29,
+      "end": 33222.629
+    },
+    {
+      "title": "Log Entry: Sol 498",
+      "start": 33222.629,
+      "end": 33379.68
+    },
+    {
+      "title": "Log Entry: Sol 498 (2)",
+      "start": 33379.68,
+      "end": 33540.379
+    },
+    {
+      "title": "Log Entry: Sol 499",
+      "start": 33540.379,
+      "end": 33765.68
+    },
+    {
+      "title": "Log Entry: Sol 500",
+      "start": 33765.68,
+      "end": 33881.68
+    },
+    {
+      "title": "Log Entry: Sol 501",
+      "start": 33881.68,
+      "end": 34251.25
+    },
+    {
+      "title": "Log Entry: Sol 502",
+      "start": 34251.25,
+      "end": 34355.51
+    },
+    {
+      "title": "Log Entry: Sol 503",
+      "start": 34355.51,
+      "end": 34386.05
+    },
+    {
+      "title": "Log Entry: Sol 504",
+      "start": 34386.05,
+      "end": 34554.06
+    },
+    {
+      "title": "Chapter 25",
+      "start": 34554.06,
+      "end": 34558.31
+    },
+    {
+      "title": "Log Entry: Sol 505",
+      "start": 34558.31,
+      "end": 35233.22
+    },
+    {
+      "title": "Log Entry: Sol 506",
+      "start": 35233.22,
+      "end": 35625.14
+    },
+    {
+      "title": "Log Entry: Sol 526",
+      "start": 35625.14,
+      "end": 35695.6
+    },
+    {
+      "title": "Log Entry: Sol 529",
+      "start": 35695.6,
+      "end": 35974.2
+    },
+    {
+      "title": "Log Entry: Sol 543",
+      "start": 35974.2,
+      "end": 36265.23
+    },
+    {
+      "title": "Log Entry: Sol 549",
+      "start": 36265.23,
+      "end": 36445.05
+    },
+    {
+      "title": "Chapter 26",
+      "start": 36445.05,
+      "end": 38886.34
+    },
+    {
+      "title": "Log Entry: Mission Day 687",
+      "start": 38886.34,
+      "end": 39146.93
+    },
+    {
+      "title": "Some Selections from the Files of Mark Watney",
+      "start": 39146.93,
+      "end": 39153.64
+    },
+    {
+      "title": "Diary of an AssCan",
+      "start": 39153.64,
+      "end": 39691.31
+    },
+    {
+      "title": "I Made It!",
+      "start": 39691.31,
+      "end": 39841.61
+    },
+    {
+      "title": "Car Trouble",
+      "start": 39841.61,
+      "end": 40003.4
+    },
+    {
+      "title": "The Earthling",
+      "start": 40003.4,
+      "end": 40712.28
+    },
+    {
+      "title": "End Credits",
+      "start": 40712.28,
+      "end": 40782.0
+    }
+  ],
+  "chapters": [
+    {
+      "title": "Chapter 1",
+      "start": 27.48,
+      "end": 823.03
+    },
+    {
+      "title": "Chapter 2",
+      "start": 823.03,
+      "end": 1945.39
+    },
+    {
+      "title": "Chapter 3",
+      "start": 1945.39,
+      "end": 3023.55
+    },
+    {
+      "title": "Chapter 4",
+      "start": 3023.55,
+      "end": 3991.35
+    },
+    {
+      "title": "Chapter 5",
+      "start": 3991.35,
+      "end": 5133.98
+    },
+    {
+      "title": "Chapter 6",
+      "start": 5133.98,
+      "end": 6756.62
+    },
+    {
+      "title": "Chapter 7",
+      "start": 6756.62,
+      "end": 8429.99
+    },
+    {
+      "title": "Chapter 8",
+      "start": 8429.99,
+      "end": 10007.58
+    },
+    {
+      "title": "Chapter 9",
+      "start": 10007.58,
+      "end": 11056.8
+    },
+    {
+      "title": "Chapter 10",
+      "start": 11056.8,
+      "end": 11918.56
+    },
+    {
+      "title": "Chapter 11",
+      "start": 11918.56,
+      "end": 13905.55
+    },
+    {
+      "title": "Chapter 12",
+      "start": 13905.55,
+      "end": 15309.26
+    },
+    {
+      "title": "Chapter 13",
+      "start": 15309.26,
+      "end": 16557.08
+    },
+    {
+      "title": "Chapter 14",
+      "start": 16557.08,
+      "end": 18137.8
+    },
+    {
+      "title": "Chapter 15",
+      "start": 18137.8,
+      "end": 20272.69
+    },
+    {
+      "title": "Chapter 16",
+      "start": 20272.69,
+      "end": 22746.02
+    },
+    {
+      "title": "Chapter 17",
+      "start": 22746.02,
+      "end": 24147.46
+    },
+    {
+      "title": "Chapter 18",
+      "start": 24147.46,
+      "end": 25699.11
+    },
+    {
+      "title": "Chapter 19",
+      "start": 25699.11,
+      "end": 27081.96
+    },
+    {
+      "title": "Chapter 20",
+      "start": 27081.96,
+      "end": 28441.21
+    },
+    {
+      "title": "Chapter 21",
+      "start": 28441.21,
+      "end": 30261.6
+    },
+    {
+      "title": "Chapter 22",
+      "start": 30261.6,
+      "end": 31668.89
+    },
+    {
+      "title": "Chapter 23",
+      "start": 31668.89,
+      "end": 33108.14
+    },
+    {
+      "title": "Chapter 24",
+      "start": 33108.14,
+      "end": 34555.63
+    },
+    {
+      "title": "Chapter 25",
+      "start": 34555.63,
+      "end": 36446.96
+    },
+    {
+      "title": "Chapter 26",
+      "start": 36446.96,
+      "end": 39142.79
+    },
+    {
+      "title": "Audiobook-only material",
+      "start": 39142.79,
+      "end": 40712.28
+    }
+  ],
+  "assetRevision": "6768bdf824617366"
+}

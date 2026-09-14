@@ -1,6 +1,6 @@
 import unittest
 from bs4 import BeautifulSoup, NavigableString
-from prepare_student_book import wrap_reader_words, transcript_section
+from prepare_student_book import wrap_reader_words, transcript_section, interlace_transcript_sections, recover_compound_cues, BookWord, AsrWord, Match
 
 
 def styled_characters(root):
@@ -50,6 +50,40 @@ class ReaderWordTests(unittest.TestCase):
     def test_supplement_rejects_regressing_timing(self):
         with self.assertRaisesRegex(AssertionError,'regress'):
             transcript_section('Opening passage',[dict(word='First',start=4,end=5),dict(word=' second',start=3,end=4)])
+
+    def test_supplements_insert_in_audio_order_without_changing_epub_cues(self):
+        a=transcript_section('First',[dict(word='Original.',start=5,end=6)])
+        b=transcript_section('Second',[dict(word='Preserved.',start=20,end=21)])
+        supplements=[transcript_section(title,[dict(word='Added.',start=t,end=t+1)]) for title,t in [('End',30),('Opening',1),('Between',10)]]
+        chapters,cues=interlace_transcript_sections([a,b],[[5,6,'exact'],[20,21,'exact']],supplements)
+        self.assertEqual([c['title'] for c in chapters],['Opening','First','Between','Second','End'])
+        self.assertIs(chapters[1],a)
+        self.assertIs(chapters[3],b)
+        self.assertEqual(cues,[[1,2,'transcript'],[5,6,'exact'],[10,11,'transcript'],[20,21,'exact'],[30,31,'transcript']])
+
+    def test_supplement_cannot_replace_overlapping_epub_narration(self):
+        a=transcript_section('Original',[dict(word='One.',start=1,end=3)])
+        b=transcript_section('Overlapping',[dict(word='Two.',start=2,end=4)])
+        with self.assertRaisesRegex(AssertionError,'overlaps'):
+            interlace_transcript_sections([a],[[1,3,'exact']],[b])
+
+    def test_compound_recovery_uses_complete_source_intervals(self):
+        words=[BookWord(w,w.replace('-',''),0) for w in ['a','well-tested','off-the-shelf','device']]
+        texts=['a','well','tested','off','the','shelf','device']
+        asr=[AsrWord(w,w,i,i+.8,.95) for i,w in enumerate(texts)]
+        cues=[[0,.8,'exact',1],[1,2,'interpolated',0],[2,6,'interpolated',0],[6,6.8,'exact',1]]
+        repairs=recover_compound_cues(words,asr,{0:Match(0,'exact',1),3:Match(6,'exact',1)},cues)
+        self.assertEqual(len(repairs),2)
+        self.assertEqual(cues[1][:2],[1,2.8])
+        self.assertEqual(cues[2][:2],[3,5.8])
+
+    def test_compound_recovery_never_splits_or_invents_source_words(self):
+        words=[BookWord(w,w,0) for w in ['a','one','hundred','items']]
+        asr=[AsrWord(w,w,i,i+.8,.95) for i,w in enumerate(['a','100','items'])]
+        cues=[[0,.8,'exact',1],[1,1.5,'interpolated',0],[1.5,2,'interpolated',0],[2,2.8,'exact',1]]
+        original=[c[:] for c in cues]
+        self.assertEqual(recover_compound_cues(words,asr,{0:Match(0,'exact',1),3:Match(2,'exact',1)},cues),[])
+        self.assertEqual(cues,original)
 
 
 if __name__=='__main__':unittest.main()
