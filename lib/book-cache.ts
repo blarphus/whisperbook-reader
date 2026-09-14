@@ -19,7 +19,7 @@ export const assetContentTypes: Record<BookAsset, string> = {
   cover: 'image/jpeg',
 };
 
-export const audioChunkSize = 8 * 1024 * 1024;
+export const audioChunkSize = 1024 * 1024;
 
 export function isCachedBook(value: string): value is CachedBook {
   return (cachedBooks as readonly string[]).includes(value);
