@@ -1,7 +1,6 @@
 import { assetContentTypes, audioChunkSize, isBookAsset, isCachedBook, objectKey } from '@/lib/book-cache';
 
 type RuntimeEnv = { BOOKS?: R2Bucket };
-const ownerId = '56411d2e-1621-4385-a40d-b1a357bc5bb5';
 
 async function getBucket() {
   try {
@@ -18,7 +17,6 @@ function numberHeader(request: Request, name: string) {
 }
 
 export async function POST(request: Request) {
-  if (request.headers.get('oai-authenticated-user-id') !== ownerId) return new Response('Forbidden', { status: 403 });
   const book = request.headers.get('x-book') ?? '';
   const asset = request.headers.get('x-asset') ?? '';
   const part = numberHeader(request, 'x-part');
