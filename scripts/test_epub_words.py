@@ -32,6 +32,9 @@ class ReaderWordTests(unittest.TestCase):
     def test_nested_inline_word_and_punctuation(self):
         self.check('<div><p>“Un<em>be<strong>liev</strong>able</em>,” she said. Don<em>’t</em> go.</p></div>', ['Unbelievable','she','said','Don’t','go'])
 
+    def test_pagebreak_processing_instructions_do_not_become_words(self):
+        self.check('<div><p>First <?pagebreak number="93"?>page.</p><p><em>Next <?pagebreak number="94"?>page.</em></p></div>', ['First','page','Next','page'])
+
     def test_block_and_break_boundaries(self):
         root,words=self.check('<div><p>one</p><p>two<br/>three<img src="cover.jpg"/>four</p><blockquote><p>five</p></blockquote></div>', ['one','two','three','four','five'])
         self.assertEqual(root.img['src'],'cover.jpg')

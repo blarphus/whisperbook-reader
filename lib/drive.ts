@@ -1,4 +1,5 @@
 const files: Record<string, Record<string, string>> = {
+  'one-of-us-is-lying': {audio:'17Oa9IRZJm5amU4UcJLZQtHU7lCIcJH8I',prepared:'1DOv8qHglCs1nmLFMN5Bqbf_86qdfACdQ',epub:'11OhFtJew0cXurtAiSevqNtSJUnr3qu1W',alignment:'1pqu-vn2GRwelloxGzURev0YmL09FyVHJ',cover:'1gDSgSQZEafLca45WKCC1sE_QGSSpC2pT'},
   'dungeon-crawler-carl': { audio: '10_SYUSwZwMzUae3YVZ4qQr-HKFX-cf_a', prepared: '1WWTZyxBz9YYbDf7Y6hfRhauYR8erUYLT', epub: '1_pkY8LQ4d_jwvh61FLe6X5IGPt7o6oeE', alignment: '1lCRdBXLG8UdggN6B8j7Vk2ByH4GRDEzq' },
   "the-car": {"audio": "1pjIxN4uISRCEVRjKIXwYY_wag9x9W7pi", "prepared": "1WpJgogtvI0t6d7GU7vgfTQsVTwZvKvr-", "epub": "1xMAkEsN_D4U9eCpTuRRkcl2HPCh3MehX", "alignment": "18HG1Idfw3fO2wngjVA4antcqlMnUbwHG", "cover": "1XGRrtpMA9Iy3qPc0JgSSXjnI9hvDsm5l"},
   "scythe": {"audio": "1-zyKxmuFsuB9T078xNuTEdV3qDOGPNiE", "prepared": "1w71H201njkS8eGBxxKfKuXh9yBaQTtYG", "epub": "1H8JXADJxHwWUYA-8u_jxuGo4yDL2TE53", "alignment": "1LbB61VgxOGGn6UcW3mIeJa4xZYM0SgBW", "cover": "1zuCMBncZqR8dqBiaq_2pCywZH0iE1C-2"},
@@ -9,8 +10,8 @@ const files: Record<string, Record<string, string>> = {
 };
 
 export function driveURL(book: string, asset: string) {
-  if (files[book] && asset === 'prepared') {
-    return 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec?book=' + encodeURIComponent(book);
+  if (files[book] && (asset === 'prepared' || asset === 'cover')) {
+    return 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec?book=' + encodeURIComponent(book) + (asset === 'cover' ? '&asset=cover' : '');
   }
   const id = files[book]?.[asset];
   if (!id) return '';

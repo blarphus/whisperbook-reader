@@ -1,6 +1,21 @@
 // Deploy as the owner with anonymous access. Only listed readers and audio ranges are exposed.
 // Source material remains in Google Drive. This endpoint does not cache or write files.
 function doGet(e) {
+  if (e && e.parameter && e.parameter.asset === 'cover') {
+    const covers = {
+      'the-car': '1XGRrtpMA9Iy3qPc0JgSSXjnI9hvDsm5l',
+      'scythe': '1zuCMBncZqR8dqBiaq_2pCywZH0iE1C-2',
+      'eragon': '1TSbFN7oSxsC4wj7J-JxzESxU-LqWF59m',
+      'project-hail-mary': '1oEoe34k3638n45QvRWJSbll-u2cRYSw3',
+      'just-mercy': '13QsFZ6mtYOBSNHebSJ7_Zh_wQVkuWceu',
+      'the-martian': '1tNhRqXt15t5f16VMMj100_Ih6DF7Nm9i',
+      'one-of-us-is-lying': '1gDSgSQZEafLca45WKCC1sE_QGSSpC2pT'
+    };
+    const id = covers[e.parameter.book];
+    if (!id) return jsonOutput({error: 'Unknown cover'});
+    const blob = DriveApp.getFileById(id).getBlob();
+    return jsonOutput({type: blob.getContentType(), data: Utilities.base64Encode(blob.getBytes())});
+  }
   if (e && e.parameter && e.parameter.asset === 'audio') {
     return audioRange(e.parameter);
   }
@@ -11,7 +26,8 @@ function doGet(e) {
     'eragon': '1F6u0OWPWrJenembohmY-2FFVAI0_k4i0',
     'project-hail-mary': '1TDYNIIX78ohGncIHZVtFd1WEORB9ooCU',
     'just-mercy': '1ScJgBpD5YDCkha2H--FcUn8hzZ8-3wAT',
-    'the-martian': '1xQUCmbUvqd3o2NL5YASuRaE3gxj1AhE9'
+    'the-martian': '1xQUCmbUvqd3o2NL5YASuRaE3gxj1AhE9',
+    'one-of-us-is-lying': '1DOv8qHglCs1nmLFMN5Bqbf_86qdfACdQ'
   };
   const book = e && e.parameter && e.parameter.book;
   const id = books[book];
@@ -33,7 +49,8 @@ function audioRange(parameters) {
     'eragon': {id: '1RF-J7mzZoG3AJzHM2dj9resgIs5rXrbW', size: 937347313},
     'project-hail-mary': {id: '19EBL2jgPQF6DFpTCVEjo9An99wgqI94L', size: 924595694},
     'just-mercy': {id: '1Sp-XYQWbs0g6iOjQpl0hpg7Lo_Q12SyW', size: 189060663},
-    'the-martian': {id: '1qfXdR8rL6eK_1G5nLeTzO4UudNqvuslg', size: 169264860}
+    'the-martian': {id: '1qfXdR8rL6eK_1G5nLeTzO4UudNqvuslg', size: 169264860},
+    'one-of-us-is-lying': {id: '17Oa9IRZJm5amU4UcJLZQtHU7lCIcJH8I', size: 306613884}
   };
   const file = files[parameters.book];
   const start = Number(parameters.start), end = Number(parameters.end);

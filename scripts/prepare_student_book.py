@@ -2,7 +2,7 @@
 from __future__ import annotations
 import argparse, base64, copy, gzip, hashlib, html, json, mimetypes, posixpath, re, sys, zipfile
 from pathlib import Path
-from bs4 import BeautifulSoup, NavigableString, Comment
+from bs4 import BeautifulSoup, NavigableString, Comment, ProcessingInstruction, Declaration, Doctype
 from lxml import etree
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from prepare_whispersync import (WORD_RE, BookWord, AsrWord, Match, normalize_word, align_words,
@@ -52,8 +52,10 @@ def wrap_reader_words(soup, root):
             output.extend(fragments(cursor,len(text)));run.clear()
         for node in children:
             if isinstance(node,Comment):continue
+            if isinstance(node,(ProcessingInstruction,Declaration,Doctype)):
+                flush();output.append(node);continue
             # Images and line breaks terminate a run, including when nested in a span.
-            is_inline=not isinstance(node,NavigableString) and node.name in inline and all(t.name in inline for t in node.find_all(True))
+            is_inline=not isinstance(node,NavigableString) and node.name in inline and all(t.name in inline for t in node.find_all(True)) and not any(isinstance(t,(ProcessingInstruction,Declaration,Doctype)) for t in node.descendants)
             if isinstance(node,NavigableString) or is_inline:run.append(node)
             else:
                 flush();process(node);output.append(node)
@@ -265,8 +267,11 @@ def recover_compound_cues(words, asr, mapped, cues):
 
 def prepare_alignment(book,sections,transcript,probe,output):
     body_ranges={'the-car':(3,32),'just-mercy':(5,23),'eragon':(5,65),'scythe':(2,47),'the-martian':(3,29),'project-hail-mary':(4,34)}
-    left,right=body_ranges[book['id']]
-    indices=book.get('readerSectionIndices',list(range(left,right)))
+    if 'readerSectionIndices' in book:
+        indices=book['readerSectionIndices']
+    else:
+        left,right=body_ranges[book['id']]
+        indices=list(range(left,right))
     assert len(set(indices))==len(indices) and all(0<=i<len(sections) for i in indices), 'Invalid reader section order'
     selected=[sections[i] for i in indices]
     words=[BookWord(**word) for section in selected for word in section['words']]

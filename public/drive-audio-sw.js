@@ -6,7 +6,8 @@ const books = {
   'eragon': {size:937347313, type:'audio/mp4'},
   'project-hail-mary': {size:924595694, type:'audio/mp4'},
   'just-mercy': {size:189060663, type:'audio/mp4'},
-  'the-martian': {size:169264860, type:'audio/mp4'}
+  'the-martian': {size:169264860, type:'audio/mp4'},
+  'one-of-us-is-lying': {size:306613884, type:'audio/mp4'}
 };
 self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
