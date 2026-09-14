@@ -1,5 +1,13 @@
 const relay = 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec';
-const books = {'the-martian': {size:169264860, type:'audio/mp4'}};
+const books = {
+  'dungeon-crawler-carl': {size:773787995, type:'audio/mp4'},
+  'the-car': {size:123387948, type:'audio/mp4'},
+  'scythe': {size:189822576, type:'audio/mpeg'},
+  'eragon': {size:937347313, type:'audio/mp4'},
+  'project-hail-mary': {size:924595694, type:'audio/mp4'},
+  'just-mercy': {size:189060663, type:'audio/mp4'},
+  'the-martian': {size:169264860, type:'audio/mp4'}
+};
 self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', event => {

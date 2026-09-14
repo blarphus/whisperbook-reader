@@ -9,8 +9,8 @@ const files: Record<string, Record<string, string>> = {
 };
 
 export function driveURL(book: string, asset: string) {
-  if (book === 'the-martian' && asset === 'prepared') {
-    return 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec?book=the-martian';
+  if (files[book] && asset === 'prepared') {
+    return 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec?book=' + encodeURIComponent(book);
   }
   const id = files[book]?.[asset];
   if (!id) return '';
@@ -32,9 +32,22 @@ export async function driveFailure(response: Response, fallback: string) {
 }
 
 export async function initializeDriveAudio(book: string) {
-  if (book !== 'the-martian') return driveURL(book, 'audio');
+  if (!files[book]) throw Error('Unknown book.');
   if (!('serviceWorker' in navigator)) throw Error('This browser cannot use Drive streaming.');
-  await navigator.serviceWorker.register(new URL('drive-audio-sw.js', location.href));
+  const registration = await navigator.serviceWorker.register(new URL('drive-audio-sw.js', location.href));
+  const pending = registration.installing || registration.waiting;
+  if (pending && pending.state !== 'activated') {
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => { pending.removeEventListener('statechange', changed); reject(Error('Drive streaming did not initialize.')); }, 15000);
+      const changed = () => {
+        if (pending.state === 'activated' || pending.state === 'redundant') {
+          clearTimeout(timer); pending.removeEventListener('statechange', changed);
+          pending.state === 'activated' ? resolve() : reject(Error('Drive streaming could not update.'));
+        }
+      };
+      pending.addEventListener('statechange', changed); changed();
+    });
+  }
   await navigator.serviceWorker.ready;
   if (!navigator.serviceWorker.controller) {
     await new Promise<void>((resolve, reject) => {

@@ -25,7 +25,7 @@ export default function Home(){
 function Reader({metadata,onBack}:{metadata:BookMetadata;onBack:()=>void}){
  const reading=true;const [book,setBook]=useState<Book|null>(null),[loading,setLoading]=useState(false),[error,setError]=useState(''),[time,setTime]=useState(0),[playing,setPlaying]=useState(false),[buffering,setBuffering]=useState(false),[rate,setRate]=useState(1.5),[mode,setMode]=useState<'sentence'|'word'>('sentence'),[chaptersOpen,setChaptersOpen]=useState(false),[storageOK,setStorageOK]=useState(true);
  const [controlsVisible,setControlsVisible]=useState(true),[timeScope,setTimeScope]=useState<'chapter'|'book'>('chapter');
- const [audioSource,setAudioSource]=useState(metadata.id==='the-martian'?'':assetURL(metadata.id,'audio'));
+ const [audioSource,setAudioSource]=useState('');
  useEffect(()=>{let active=true;void initializeDriveAudio(metadata.id).then(url=>{if(active){setAudioSource(url);setError(previous=>previous.startsWith('Audio')?'':previous)}}).catch(e=>{if(active)setError(e instanceof Error?e.message:'Drive streaming could not initialize.')});return()=>{active=false}},[]);
  const audioReady=useRef(false);const audio=useRef<HTMLAudioElement>(null),current=useRef({time:0,rate:1.5,mode:'sentence' as 'sentence'|'word'}),restored=useRef(false),lastSaved=useRef(0);
  const persist=useCallback(()=>{if(!restored.current)return;const s=current.current;setStorageOK(saveProgress({position:audioReady.current?(audio.current?.currentTime??s.time):s.time,rate:s.rate,highlight:s.mode,updatedAt:Date.now()},metadata.id))},[]);
