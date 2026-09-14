@@ -30,3 +30,19 @@ export async function driveFailure(response: Response, fallback: string) {
   }
   return fallback;
 }
+
+export async function initializeDriveAudio(book: string) {
+  if (book !== 'the-martian') return driveURL(book, 'audio');
+  if (!('serviceWorker' in navigator)) throw Error('This browser cannot use Drive streaming.');
+  await navigator.serviceWorker.register(new URL('drive-audio-sw.js', location.href));
+  await navigator.serviceWorker.ready;
+  if (!navigator.serviceWorker.controller) {
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => reject(Error('Drive streaming did not initialize.')), 15000);
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        clearTimeout(timer); resolve();
+      }, {once: true});
+    });
+  }
+  return new URL('drive-audio/' + book, location.href).href;
+}
