@@ -34,7 +34,8 @@ export async function driveFailure(response: Response, fallback: string) {
 export async function initializeDriveAudio(book: string) {
   if (!files[book]) throw Error('Unknown book.');
   if (!('serviceWorker' in navigator)) throw Error('This browser cannot use Drive streaming.');
-  const registration = await navigator.serviceWorker.register(new URL('drive-audio-sw.js', location.href));
+  const registration = await navigator.serviceWorker.register(new URL('drive-audio-sw.js', location.href), {updateViaCache: 'none'});
+  await registration.update();
   const pending = registration.installing || registration.waiting;
   if (pending && pending.state !== 'activated') {
     await new Promise<void>((resolve, reject) => {
@@ -49,12 +50,15 @@ export async function initializeDriveAudio(book: string) {
     });
   }
   await navigator.serviceWorker.ready;
-  if (!navigator.serviceWorker.controller) {
+  if (navigator.serviceWorker.controller !== registration.active) {
     await new Promise<void>((resolve, reject) => {
-      const timer = setTimeout(() => reject(Error('Drive streaming did not initialize.')), 15000);
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        clearTimeout(timer); resolve();
-      }, {once: true});
+      const changed = () => {
+        if (navigator.serviceWorker.controller === registration.active) {
+          clearTimeout(timer); navigator.serviceWorker.removeEventListener('controllerchange', changed); resolve();
+        }
+      };
+      const timer = setTimeout(() => { navigator.serviceWorker.removeEventListener('controllerchange', changed); reject(Error('Drive streaming did not initialize.')); }, 15000);
+      navigator.serviceWorker.addEventListener('controllerchange', changed); changed();
     });
   }
   return new URL('drive-audio/' + book, location.href).href;
