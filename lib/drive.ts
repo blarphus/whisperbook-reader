@@ -15,3 +15,15 @@ export function driveURL(book: string, asset: string) {
   if (!key) return '';
   return `https://www.googleapis.com/drive/v3/files/${id}?alt=media&key=${encodeURIComponent(key)}`;
 }
+
+export async function driveFailure(response: Response, fallback: string) {
+  try {
+    const payload = await response.json() as { error?: { errors?: { reason?: string }[] } };
+    if (payload.error?.errors?.some((e: { reason?: string }) => e.reason === 'downloadQuotaExceeded')) {
+      return "Google Drive's download limit is blocking this book. Try again later.";
+    }
+  } catch {
+    // Non-JSON failures retain the original procedural message.
+  }
+  return fallback;
+}
