@@ -9,6 +9,9 @@ const files: Record<string, Record<string, string>> = {
 };
 
 export function driveURL(book: string, asset: string) {
+  if (book === 'the-martian' && asset === 'prepared') {
+    return 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec?book=the-martian';
+  }
   const id = files[book]?.[asset];
   if (!id) return '';
   const key = process.env.NEXT_PUBLIC_DRIVE_API_KEY;
