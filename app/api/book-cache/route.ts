@@ -44,3 +44,18 @@ export async function POST(request: Request) {
   });
   return Response.json({ stored: objectKey(book, asset, part), contentLength });
 }
+
+export async function DELETE(request: Request) {
+  const book = request.headers.get('x-book') ?? '';
+  const asset = request.headers.get('x-asset') ?? '';
+  const parts = numberHeader(request, 'x-parts');
+  if (!isCachedBook(book) || !isBookAsset(asset) || parts === undefined || parts < 1 || parts > 256) return new Response('Invalid cache details', { status: 400 });
+  const bucket = await getBucket();
+  if (!bucket) return new Response('Book cache is unavailable', { status: 503 });
+  if (asset === 'audio') {
+    await bucket.delete([...Array.from({ length: parts }, (_, part) => objectKey(book, 'audio', part)), `${book}/audio-manifest`]);
+  } else {
+    await bucket.delete(objectKey(book, asset));
+  }
+  return Response.json({ deleted: asset });
+}
