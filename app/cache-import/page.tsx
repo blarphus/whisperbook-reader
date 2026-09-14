@@ -87,32 +87,11 @@ export default function CacheImportPage() {
     }
   }
 
-  async function clearCache() {
-    if (!matched.length) return;
-    setRunning(true);
-    try {
-      for (let fileIndex = 0; fileIndex < matched.length; fileIndex += 1) {
-        const spec = matched[fileIndex];
-        const file = available.get(spec.fileName)!;
-        const parts = spec.asset === 'audio' ? Math.ceil(file.size / audioChunkSize) : 1;
-        setStatus(`Removing ${fileIndex + 1}/${matched.length} ${spec.book} ${spec.asset}`);
-        const response = await fetch('/api/book-cache', { method: 'DELETE', headers: { 'x-book': spec.book, 'x-asset': spec.asset, 'x-parts': String(parts) } });
-        if (!response.ok) throw new Error(await response.text());
-      }
-      setStatus('Selected cached files were removed.');
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : 'Removal failed.');
-    } finally {
-      setRunning(false);
-    }
-  }
-
   return <main style={{ maxWidth: 680, margin: '48px auto', padding: 24, fontFamily: 'system-ui' }}>
     <h1>Reader cache</h1>
     <p>{matched.length} of {specs.length} reader files selected.</p>
     <input aria-label="Reader files" type="file" multiple onChange={selectFiles} disabled={running} />
     <button type="button" onClick={upload} disabled={running || !matched.length} style={{ display: 'block', marginTop: 20 }}>{running ? 'Caching…' : 'Cache selected files'}</button>
-    <button type="button" onClick={clearCache} disabled={running || !matched.length} style={{ display: 'block', marginTop: 12 }}>Remove selected cached files</button>
     <p aria-live="polite">{status}</p>
   </main>;
 }
