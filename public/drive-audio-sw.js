@@ -27,8 +27,9 @@ async function streamAudio(request, book) {
   let start = match ? (match[1] ? Number(match[1]) : Math.max(0,size-Number(match[2]))) : 0;
   let end = match && match[1] && match[2] ? Number(match[2]) : size-1;
   if (!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start>=size||end<start) return new Response(null,{status:416,headers:{'Content-Range':`bytes */${size}`}});
-  end=Math.min(end,size-1,start+8*1024*1024-1);
+  end=Math.min(end,size-1,start+16*1024*1024-1);
   const abort = new AbortController();
+  if(request.signal.aborted) abort.abort();
   request.signal.addEventListener('abort',()=>abort.abort(),{once:true});
   let position=start;
   const body = new ReadableStream({
@@ -36,18 +37,30 @@ async function streamAudio(request, book) {
       if(position>end){controller.close();return;}
       const last=Math.min(end,position+1048576-1);
       try {
-        const url=new URL(relay);
-        for(const [key,value] of Object.entries({book,asset:'audio',start:position,end:last})) url.searchParams.set(key,String(value));
-        const response=await fetch(url,{signal:abort.signal,cache:'no-store',credentials:'omit'});
-        if(!response.ok) throw Error('Drive relay could not be reached');
-        const chunk=await response.json();
-        if(chunk.error||chunk.start!==position||chunk.end!==last||chunk.total!==size) throw Error(chunk.error||'Drive audio range did not match');
-        const decoded=atob(chunk.data), bytes=Uint8Array.from(decoded,c=>c.charCodeAt(0));
-        if(bytes.length!==last-position+1) throw Error('Drive audio range was incomplete');
+        const bytes=await loadRange(book,position,last,size,abort.signal);
         position=last+1;controller.enqueue(bytes);
       } catch(error){abort.abort();controller.error(error);}
     },
     cancel(){abort.abort();}
   },{highWaterMark:0});
   return new Response(body,{status:206,headers:{'Content-Type':type,'Content-Length':String(end-start+1),'Content-Range':`bytes ${start}-${end}/${size}`,'Accept-Ranges':'bytes','Cache-Control':'no-store'}});
+}
+async function loadRange(book,start,end,total,signal){
+  const url=new URL(relay);
+  for(const [key,value] of Object.entries({book,asset:'audio',start,end})) url.searchParams.set(key,String(value));
+  for(let attempt=0;attempt<3;attempt++){
+    try{
+      if(signal.aborted) throw Error('Audio request cancelled');
+      const response=await fetch(url,{signal,cache:'no-store',credentials:'omit'});
+      if(!response.ok) throw Error('Drive relay could not be reached');
+      const chunk=await response.json();
+      if(chunk.error||chunk.start!==start||chunk.end!==end||chunk.total!==total) throw Error(chunk.error||'Drive audio range did not match');
+      const decoded=atob(chunk.data),bytes=Uint8Array.from(decoded,c=>c.charCodeAt(0));
+      if(bytes.length!==end-start+1) throw Error('Drive audio range was incomplete');
+      return bytes;
+    }catch(error){
+      if(signal.aborted||attempt===2) throw error;
+      await new Promise(resolve=>setTimeout(resolve,500*(attempt+1)));
+    }
+  }
 }
