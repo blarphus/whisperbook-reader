@@ -1,0 +1,200 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "harry-potter",
+  "title": "Harry Potter and the Philosopher’s Stone",
+  "author": "J. K. Rowling",
+  "duration": 31287.5895,
+  "introEnd": 50.71,
+  "creditsStart": 31287.5895,
+  "markers": [
+    {
+      "title": "Opening Credits",
+      "start": 0.0,
+      "end": 64.5
+    },
+    {
+      "title": "Chapter 1: The Boy Who Lived",
+      "start": 64.5,
+      "end": 1971.5
+    },
+    {
+      "title": "Chapter 2: The Vanishing Glass",
+      "start": 1971.5,
+      "end": 3319.5
+    },
+    {
+      "title": "Chapter 3: The Letters from No One",
+      "start": 3319.5,
+      "end": 4848.5
+    },
+    {
+      "title": "Chapter 4: The Keeper of the Keys",
+      "start": 4848.5,
+      "end": 6369.92
+    },
+    {
+      "title": "Chapter 5: Diagon Alley",
+      "start": 6369.92,
+      "end": 9146.92
+    },
+    {
+      "title": "Chapter 6: The Journey from Platform Nine and Three-Quarters",
+      "start": 9146.92,
+      "end": 11529.92
+    },
+    {
+      "title": "Chapter 7: The Sorting Hat",
+      "start": 11529.92,
+      "end": 13377.43
+    },
+    {
+      "title": "Chapter 8: The Potions Master",
+      "start": 13377.43,
+      "end": 14542.43
+    },
+    {
+      "title": "Chapter 9: The Midnight Duel",
+      "start": 14542.43,
+      "end": 16428.43
+    },
+    {
+      "title": "Chapter 10: Hallowe'en",
+      "start": 16428.43,
+      "end": 18035.43
+    },
+    {
+      "title": "Chapter 11: Quidditch",
+      "start": 18035.43,
+      "end": 19294.549
+    },
+    {
+      "title": "Chapter 12: The Mirror of Erised",
+      "start": 19294.549,
+      "end": 21441.549
+    },
+    {
+      "title": "Chapter 13: Nicolas Flamel",
+      "start": 21441.549,
+      "end": 22615.549
+    },
+    {
+      "title": "Chapter 14: Norbert the Norwegian Ridgeback",
+      "start": 22615.549,
+      "end": 23897.549
+    },
+    {
+      "title": "Chapter 15: The Forbidden Forest",
+      "start": 23897.549,
+      "end": 25905.909
+    },
+    {
+      "title": "Chapter 16: Through the Trapdoor",
+      "start": 25905.909,
+      "end": 28242.909
+    },
+    {
+      "title": "Chapter 17: The Man with Two Faces",
+      "start": 28242.909,
+      "end": 30493.909
+    },
+    {
+      "title": "End Credits",
+      "start": 30493.909,
+      "end": 31287.59
+    }
+  ],
+  "assetRevision": "55c41fe4114ab5a4",
+  "chapters": [
+    {
+      "title": "Dedication",
+      "start": 50.71,
+      "end": 74.131
+    },
+    {
+      "title": "Chapter One: The Boy Who Lived",
+      "start": 74.131,
+      "end": 1948.26
+    },
+    {
+      "title": "Chapter Two: The Vanishing Glass",
+      "start": 1948.26,
+      "end": 3315.26
+    },
+    {
+      "title": "Chapter Three: The Letters from No One",
+      "start": 3315.26,
+      "end": 4827.82
+    },
+    {
+      "title": "Chapter Four: The Keeper of the Keys",
+      "start": 4827.82,
+      "end": 6361.86
+    },
+    {
+      "title": "Chapter Five: Diagon Alley",
+      "start": 6361.86,
+      "end": 9140.82
+    },
+    {
+      "title": "Chapter Six: The Journey from Platform Nine and Three-Quarters",
+      "start": 9140.82,
+      "end": 11522.52
+    },
+    {
+      "title": "Chapter Seven: The Sorting Hat",
+      "start": 11522.52,
+      "end": 13372.92
+    },
+    {
+      "title": "Chapter Eight: The Potions Master",
+      "start": 13372.92,
+      "end": 14534.6
+    },
+    {
+      "title": "Chapter Nine: The Midnight Duel",
+      "start": 14534.6,
+      "end": 16415.94
+    },
+    {
+      "title": "Chapter Ten: Hallowe'en",
+      "start": 16415.94,
+      "end": 18024.56
+    },
+    {
+      "title": "Chapter Eleven: Quidditch",
+      "start": 18024.56,
+      "end": 19283.58
+    },
+    {
+      "title": "Chapter Twelve: The Mirror of Erised",
+      "start": 19283.58,
+      "end": 21435.96
+    },
+    {
+      "title": "Chapter Thirteen: Nicolas Flamel",
+      "start": 21435.96,
+      "end": 22618.947
+    },
+    {
+      "title": "Chapter Fourteen: Norbert the Norwegian Ridgeback",
+      "start": 22618.947,
+      "end": 23877.04
+    },
+    {
+      "title": "Chapter Fifteen: The Forbidden Forest",
+      "start": 23877.04,
+      "end": 25881.76
+    },
+    {
+      "title": "Chapter Sixteen: Through the Trapdoor",
+      "start": 25881.76,
+      "end": 28233.72
+    },
+    {
+      "title": "Chapter Seventeen: The Man with Two Faces",
+      "start": 28233.72,
+      "end": 30462.4
+    }
+  ]
+}

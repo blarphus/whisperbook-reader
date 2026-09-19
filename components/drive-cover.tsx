@@ -25,5 +25,5 @@ export function DriveCover({src, alt}: {src: string; alt: string}) {
     void load();
     return () => controller.abort();
   }, [src, relay]);
-  return <img src={source || undefined} alt={alt}/>;
+  return <img src={source || '/covers/placeholder.svg'} alt={alt} loading="eager" decoding="async" fetchPriority="high"/>;
 }

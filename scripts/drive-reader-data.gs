@@ -27,7 +27,9 @@ function doGet(e) {
     'project-hail-mary': '1TDYNIIX78ohGncIHZVtFd1WEORB9ooCU',
     'just-mercy': '1ScJgBpD5YDCkha2H--FcUn8hzZ8-3wAT',
     'the-martian': '1xQUCmbUvqd3o2NL5YASuRaE3gxj1AhE9',
-    'one-of-us-is-lying': '1DOv8qHglCs1nmLFMN5Bqbf_86qdfACdQ'
+    'one-of-us-is-lying': '1DOv8qHglCs1nmLFMN5Bqbf_86qdfACdQ',
+    'bad-beginning': '1LE2C6_Nw3U4hGl1sNumQpZdKEpp52WFJ',
+    'harry-potter': '1tVKydOfk7aGDrqFokr1xA8qIOxYEXrkP'
   };
   const book = e && e.parameter && e.parameter.book;
   const id = books[book];
@@ -50,7 +52,9 @@ function audioRange(parameters) {
     'project-hail-mary': {id: '19EBL2jgPQF6DFpTCVEjo9An99wgqI94L', size: 924595694},
     'just-mercy': {id: '1Sp-XYQWbs0g6iOjQpl0hpg7Lo_Q12SyW', size: 189060663},
     'the-martian': {id: '1qfXdR8rL6eK_1G5nLeTzO4UudNqvuslg', size: 169264860},
-    'one-of-us-is-lying': {id: '17Oa9IRZJm5amU4UcJLZQtHU7lCIcJH8I', size: 306613884}
+    'one-of-us-is-lying': {id: '17Oa9IRZJm5amU4UcJLZQtHU7lCIcJH8I', size: 306613884},
+    'bad-beginning': {id: '1a1Q8EneIitIh7Z8BQ8kIoJAo-Xw54O-o', size: 72960252},
+    'harry-potter': {id: '1gVuElWYYn0yyfliFYKUeb4q-R8ry4isG', size: 644810003}
   };
   const file = files[parameters.book];
   const start = Number(parameters.start), end = Number(parameters.end);

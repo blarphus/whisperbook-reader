@@ -7,7 +7,9 @@ const books = {
   'project-hail-mary': {size:924595694, type:'audio/mp4'},
   'just-mercy': {size:189060663, type:'audio/mp4'},
   'the-martian': {size:169264860, type:'audio/mp4'},
-  'one-of-us-is-lying': {size:306613884, type:'audio/mp4'}
+  'one-of-us-is-lying': {size:306613884, type:'audio/mp4'},
+  'bad-beginning': {size:72960252, type:'audio/mp4'},
+  'harry-potter': {size:644810003, type:'audio/ogg; codecs=opus'}
 };
 self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));

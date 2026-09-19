@@ -1,0 +1,4 @@
+/* Hand-tuned dark-mode fixes that sit on top of the generated app/dark.css. */
+html[data-theme=dark] .play-button,
+html[data-theme=dark] .page-navigation .page-play-button{background:#3f6b52;color:#f4f7f2;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+html[data-theme=dark] .play-button:hover:not(:disabled){background:#4a7a5e}

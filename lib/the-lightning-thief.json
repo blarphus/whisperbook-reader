@@ -1,0 +1,247 @@
+{
+  "id": "the-lightning-thief",
+  "title": "The Lightning Thief",
+  "author": "Rick Riordan",
+  "duration": 36045.993167,
+  "chapters": [
+    {
+      "title": "Dedication",
+      "start": 0.0,
+      "end": 17.167
+    },
+    {
+      "title": "1. I Accidentally Vaporize My Pre-Algebra Teacher",
+      "start": 17.167,
+      "end": 1367.72
+    },
+    {
+      "title": "2. Three Old Ladies Knit the Socks of Death",
+      "start": 1367.72,
+      "end": 2491.04
+    },
+    {
+      "title": "3. Grover Unexpectedly Loses his Pants",
+      "start": 2501.94,
+      "end": 3916.0
+    },
+    {
+      "title": "4. My Mother Teaches Me Bullfighting",
+      "start": 3926.04,
+      "end": 5086.41
+    },
+    {
+      "title": "5. I Play Pinochle with a Horse",
+      "start": 5095.41,
+      "end": 6805.75
+    },
+    {
+      "title": "6. I Become Supreme Lord of the Bathroom",
+      "start": 6815.53,
+      "end": 8428.21
+    },
+    {
+      "title": "7. My Dinner Goes Up in Smoke",
+      "start": 8437.38,
+      "end": 9669.89
+    },
+    {
+      "title": "8. We Capture a Flag",
+      "start": 9678.12,
+      "end": 11534.13
+    },
+    {
+      "title": "9. I am Offered a Quest",
+      "start": 11542.51,
+      "end": 13607.22
+    },
+    {
+      "title": "10. I Ruin a Perfectly Good Bus",
+      "start": 13613.75,
+      "end": 15515.68
+    },
+    {
+      "title": "11. We Visit the Garden Gnome Emporium",
+      "start": 15525.44,
+      "end": 17566.74
+    },
+    {
+      "title": "12. We Get Advice from a Poodle",
+      "start": 17575.63,
+      "end": 18401.71
+    },
+    {
+      "title": "13. I Plunge to My Death",
+      "start": 18412.35,
+      "end": 19840.85
+    },
+    {
+      "title": "14. I Become a Known Fugitive",
+      "start": 19850.26,
+      "end": 20487.18
+    },
+    {
+      "title": "15. A God Buys Us Cheeseburgers",
+      "start": 20496.55,
+      "end": 22631.82
+    },
+    {
+      "title": "16. We Take a Zebra to Vegas",
+      "start": 22639.91,
+      "end": 24972.33
+    },
+    {
+      "title": "17. We Shop for Water Beds",
+      "start": 24981.38,
+      "end": 26692.55
+    },
+    {
+      "title": "18. Annabeth does Obedience School",
+      "start": 26702.17,
+      "end": 28251.22
+    },
+    {
+      "title": "19. We Find Out the Truth, Sort of",
+      "start": 28261.56,
+      "end": 30368.79
+    },
+    {
+      "title": "20. I Battle My Jerk Relative",
+      "start": 30376.43,
+      "end": 31734.98
+    },
+    {
+      "title": "21. I Settle My Tab",
+      "start": 31743.0,
+      "end": 33848.52
+    },
+    {
+      "title": "22. The Prophecy Comes True",
+      "start": 33856.16,
+      "end": 36014.76
+    }
+  ],
+  "markers": [
+    {
+      "title": "Introduction",
+      "start": 0.0,
+      "end": 9.26
+    },
+    {
+      "title": "1. I Accidentally Vaporize My Pre-Algebra Teacher",
+      "start": 9.26,
+      "end": 1371.14
+    },
+    {
+      "title": "2. Three Old Ladies Knit the Socks of Death",
+      "start": 1371.14,
+      "end": 2494.38
+    },
+    {
+      "title": "3. Grover Unexpectedly Loses His Pants",
+      "start": 2494.38,
+      "end": 3919.49
+    },
+    {
+      "title": "4. My Mother Teaches Me Bullfighting",
+      "start": 3919.49,
+      "end": 5091.549
+    },
+    {
+      "title": "5. I Play Pinochle with a Horse",
+      "start": 5091.549,
+      "end": 6809.87
+    },
+    {
+      "title": "6. I Become Supreme Lord of the Bathroom",
+      "start": 6809.87,
+      "end": 8431.2
+    },
+    {
+      "title": "7. My Dinner Goes Up in Smoke",
+      "start": 8431.2,
+      "end": 9673.87
+    },
+    {
+      "title": "8. We Capture a Flag",
+      "start": 9673.87,
+      "end": 11537.28
+    },
+    {
+      "title": "9. I Am Offered a Quest",
+      "start": 11537.28,
+      "end": 13609.28
+    },
+    {
+      "title": "10. I Ruin a Perfectly Good Bus",
+      "start": 13609.28,
+      "end": 15519.02
+    },
+    {
+      "title": "11. We Visit the Garden Gnome Emporium",
+      "start": 15519.02,
+      "end": 17570.97
+    },
+    {
+      "title": "12. We Get Advice from a Poodle",
+      "start": 17570.97,
+      "end": 18406.726
+    },
+    {
+      "title": "13. I Plunge to My Death",
+      "start": 18406.726,
+      "end": 19844.19
+    },
+    {
+      "title": "14. I Become a Known Fugitive",
+      "start": 19844.19,
+      "end": 20490.34
+    },
+    {
+      "title": "15. A God Buys Us Cheeseburgers",
+      "start": 20490.34,
+      "end": 22633.0
+    },
+    {
+      "title": "16. We Take a Zebra to Vegas",
+      "start": 22633.0,
+      "end": 24976.53
+    },
+    {
+      "title": "17. We Shop for Waterbeds",
+      "start": 24976.53,
+      "end": 26696.85
+    },
+    {
+      "title": "18. Annabeth Does Obedience School",
+      "start": 26696.85,
+      "end": 28254.42
+    },
+    {
+      "title": "19. We Find Out the Truth, Sort Of",
+      "start": 28254.42,
+      "end": 30372.78
+    },
+    {
+      "title": "20. I Battle My Jerk Relative",
+      "start": 30372.78,
+      "end": 31736.809
+    },
+    {
+      "title": "21. I Settle My Tab",
+      "start": 31736.809,
+      "end": 33852.83
+    },
+    {
+      "title": "22. The Prophecy Comes True",
+      "start": 33852.83,
+      "end": 36019.97
+    },
+    {
+      "title": "Outroduction",
+      "start": 36019.97,
+      "end": 36045.993
+    }
+  ],
+  "assetRevision": "3c14e8fb42ae19f6",
+  "chapterCount": 22
+}

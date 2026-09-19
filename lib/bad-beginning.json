@@ -1,0 +1,45 @@
+{
+  "audioOnlyIntroduction": false,
+  "version": 1,
+  "id": "bad-beginning",
+  "title": "The Bad Beginning",
+  "author": "Lemony Snicket",
+  "duration": 8979.017007,
+  "introEnd": 3.06,
+  "creditsStart": 8979.017007,
+  "markers": [
+    {
+      "title": "Part 1",
+      "start": 3.06,
+      "end": 3272.76
+    },
+    {
+      "title": "Part 2",
+      "start": 3272.76,
+      "end": 6417.08
+    },
+    {
+      "title": "Part 3",
+      "start": 6417.08,
+      "end": 8979.017007
+    }
+  ],
+  "assetRevision": "f04c9f0088fddc1e",
+  "chapters": [
+    {
+      "title": "Part 1",
+      "start": 3.06,
+      "end": 3272.76
+    },
+    {
+      "title": "Part 2",
+      "start": 3272.76,
+      "end": 6417.08
+    },
+    {
+      "title": "Part 3",
+      "start": 6417.08,
+      "end": 8967.86
+    }
+  ]
+}

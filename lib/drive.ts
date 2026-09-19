@@ -7,12 +7,38 @@ const files: Record<string, Record<string, string>> = {
   "project-hail-mary": {"audio": "19EBL2jgPQF6DFpTCVEjo9An99wgqI94L", "prepared": "1TDYNIIX78ohGncIHZVtFd1WEORB9ooCU", "epub": "1WolXvTtv99RqxkIkkPzeF5lv12IvW7zr", "alignment": "1Nzm0QxN4q-ArY6VZXh4rseUK8xWRIkPb", "cover": "1oEoe34k3638n45QvRWJSbll-u2cRYSw3"},
   "just-mercy": {"audio": "1Sp-XYQWbs0g6iOjQpl0hpg7Lo_Q12SyW", "prepared": "1ScJgBpD5YDCkha2H--FcUn8hzZ8-3wAT", "epub": "1AKrSzEmc5DY-mQA3vkgC_1RjO941e1Vy", "alignment": "1jow8e9prX0w9P3-E2hcRCe2X5y24Pw8Y", "cover": "13QsFZ6mtYOBSNHebSJ7_Zh_wQVkuWceu"},
   "the-martian": {"audio": "1qfXdR8rL6eK_1G5nLeTzO4UudNqvuslg", "prepared": "1BRbf4C22MzGYHepCpDTV26VZnqGo-BH5", "epub": "1DYux1Dz-z1amrUygf-X92hRD1GylZQ-B", "alignment": "19LeJq-SQyArGBnEJz80ixs4kCBDqIaot", "cover": "1tNhRqXt15t5f16VMMj100_Ih6DF7Nm9i"},
+  "the-lightning-thief": {"audio":"", "prepared":"", "epub":"", "alignment":"", "cover":""},
 };
 export const r2AudioBase = 'https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev/audio';
-export const r2Books:Record<string,{extension:string}>={'project-hail-mary':{extension:'m4a'},'the-maze-runner':{extension:'mp3'}};
+const r2Base = 'https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev';
+const preparedKeys: Record<string, string> = {
+  'dungeon-crawler-carl': 'reader/dungeon-crawler-carl/9d81f65a2e919ff9.json.gz',
+  'the-car': 'reader/the-car/ba6e681221fdc09f.json.gz',
+  scythe: 'reader/scythe/9733a8978974a4a0.json.gz',
+  eragon: 'reader/eragon/ec7bc005affa9706.json.gz',
+  'project-hail-mary': 'reader/project-hail-mary/68b9fec9c03a758c.json.gz',
+  'just-mercy': 'reader/just-mercy/33d4cd41cb96b1b8.json.gz',
+  'the-martian': 'reader/the-martian/ef2cdba97a67b661.json.gz',
+  'one-of-us-is-lying': 'reader/one-of-us-is-lying/fedb15be918f5bbb.json.gz',
+  'the-maze-runner': 'reader/the-maze-runner/ce074692e8d79e54.json.gz',
+  'bad-beginning': 'reader/bad-beginning/f04c9f0088fddc1e0a75d2d73e5807e1.json.gz',
+  'harry-potter': 'reader/harry-potter/55c41fe4114ab5a4fb048a3806de8ea2.json.gz',
+  'the-lightning-thief': 'reader/the-lightning-thief/7e920cb4c2ccba7c.json.gz',
+};
+export const r2Books:Record<string,{extension:string}>={
+  'dungeon-crawler-carl':{extension:'m4a'},'the-car':{extension:'m4a'},scythe:{extension:'mp3'},eragon:{extension:'m4a'},
+  'project-hail-mary':{extension:'m4a'},'just-mercy':{extension:'m4a'},
+  'the-martian':{extension:'m4a'},'one-of-us-is-lying':{extension:'m4a'},
+  'the-maze-runner':{extension:'mp3'},'bad-beginning':{extension:'m4a'},'harry-potter':{extension:'opus'},'the-lightning-thief':{extension:'opus'},
+};
+
+export function preparedFallbackURL(book: string) {
+  if (!files[book]) return '';
+  return 'https://script.google.com/macros/s/AKfycbzutkLMbOkhlTczODwVfG9LR_oSzURVEMDtj_rnq0TYkvkNqo3nLny-EWRo2f-qkRkB/exec?book=' + encodeURIComponent(book);
+}
 
 export function driveURL(book: string, asset: string) {
-  if (book === 'the-maze-runner' && asset === 'prepared') return '/books/the-maze-runner.reader.json.gz';
+  if (asset === 'prepared' && preparedKeys[book]) return `${r2Base}/${preparedKeys[book]}`;
   if (files[book] && asset === 'cover') {
     const id = files[book].cover;
     if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w600`;

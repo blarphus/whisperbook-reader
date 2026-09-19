@@ -34,9 +34,16 @@ const books:Record<string,Record<string,DriveFile>>={'dungeon-crawler-carl':{
  epub:{id:'1AKrSzEmc5DY-mQA3vkgC_1RjO941e1Vy',type:'application/epub+zip'},
  alignment:{id:'1jow8e9prX0w9P3-E2hcRCe2X5y24Pw8Y',type:'application/json'},
  cover:{id:'13QsFZ6mtYOBSNHebSJ7_Zh_wQVkuWceu',type:'image/jpeg'}
-}};
+},'bad-beginning':{audio:{id:'1a1Q8EneIitIh7Z8BQ8kIoJAo-Xw54O-o',type:'audio/mp4'},prepared:{id:'1LE2C6_Nw3U4hGl1sNumQpZdKEpp52WFJ',type:'application/json; charset=utf-8'}},'harry-potter':{audio:{id:'1gVuElWYYn0yyfliFYKUeb4q-R8ry4isG',type:'audio/ogg; codecs=opus'},prepared:{id:'1tVKydOfk7aGDrqFokr1xA8qIOxYEXrkP',type:'application/json; charset=utf-8'}}};
 export async function GET(request:Request,{params}:{params:Promise<{asset:string}>}){
- const {asset}=await params;const id=new URL(request.url).searchParams.get('book')||'dungeon-crawler-carl';const file=Object.hasOwn(books,id)&&Object.hasOwn(books[id],asset)?books[id][asset]:undefined;if(!file)return new Response('Not found',{status:404});
+ const {asset}=await params;const id=new URL(request.url).searchParams.get('book')||'dungeon-crawler-carl';
+ if(id==='the-lightning-thief'&&asset==='prepared'){
+  const upstream=await fetch('https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev/reader/the-lightning-thief/7e920cb4c2ccba7c.json.gz',{signal:request.signal});
+  if(!upstream.ok||!upstream.body)return new Response('Reader package unavailable',{status:502});
+  const headers=new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'public, max-age=3600'});
+  return new Response(upstream.body.pipeThrough(new DecompressionStream('gzip')),{status:200,headers});
+ }
+ const file=Object.hasOwn(books,id)&&Object.hasOwn(books[id],asset)?books[id][asset]:undefined;if(!file)return new Response('Not found',{status:404});
  const range=request.headers.get('range');if(range&&!/^bytes=(?:\d+-\d*|-\d+)$/.test(range))return new Response('Invalid range',{status:416});
  // Drive rejects open-ended audio requests from the hosted worker. Return a
  // bounded partial response; the media element requests the next part as needed.
