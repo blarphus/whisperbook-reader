@@ -506,6 +506,14 @@ def process(job):
     if cover is None:  # fall back to the artwork embedded in the audiobook
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(audio), '-map', '0:v:0', '-frames:v', '1', str(cover_jpg)], capture_output=True)
         cover = cover_jpg if cover_jpg.exists() else None
+    if cover is None and epub:   # then the ebook's own cover image
+        import zipfile
+        try:
+            with zipfile.ZipFile(epub) as z:
+                names = [n for n in z.namelist() if re.search(r'\.(jpe?g|png)$', n, re.I)]
+                pick = next((n for n in names if 'cover' in n.lower()), None)
+                if pick: cover_jpg.write_bytes(z.read(pick)); cover = cover_jpg
+        except Exception as e: print('no epub cover:', e, flush=True)
     if cover:
         small_cover = W / 'cover-600.jpg'
         sh(['ffmpeg', '-v', 'error', '-y', '-i', cover, '-vf', 'scale=600:-2', '-q:v', '3', small_cover])

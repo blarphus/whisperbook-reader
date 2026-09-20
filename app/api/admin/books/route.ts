@@ -30,6 +30,10 @@ export async function POST(request:Request){
  if(b.action==='publish'||b.action==='classes'){
   if(Array.isArray(b.classes)){book.classes=b.classes.map(String).filter(c=>CLASSES.includes(c));const o=await readOverrides();if(b.id&&o[b.id]){delete o[b.id];await writeOverrides(o)}}
   if(b.action==='publish'){(book as any).hidden=false;delete (book as any).needsReview}
+ }else if(b.action==='cover'){
+  const u=String((b as any).coverUrl||'');
+  if(!/^https:\/\/media\.studentbookreader\.com\/covers\/[A-Za-z0-9._-]+(\?v=[A-Za-z0-9]+)?$/.test(u))return reply({error:'Invalid cover address.'},400);
+  book.cover=u;
  }else if(b.action==='hide')(book as any).hidden=true;
  else if(b.action==='remove'){
   cat.books=cat.books.filter(x=>x.id!==book.id);
