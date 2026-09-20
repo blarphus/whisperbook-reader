@@ -25,6 +25,7 @@ PART = 48 * 1024 * 1024
 class Job:
     def __init__(self, cfg):
         self.cfg = cfg
+        self.id = cfg['jobId']
         self.url = f"{cfg['base']}/api/job/{cfg['jobId']}"
         self.headers = {'x-job-token': cfg['token']}
         self._last = 0
