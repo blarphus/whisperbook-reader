@@ -242,28 +242,64 @@ def transcribe(job, src, duration, prompt):
     model = WhisperModel('turbo', device='cuda', compute_type='float16')
     # Long books do not fit in memory in one go (the whole recording is decoded at once), so work in ~15 minute pieces cut where the narrator pauses.
     cuts = plan_chunks(src, duration)
-    rows, words, seg_id = [], [], 0
+    rows, words, seg_id, skipped, first = [], [], 0, [], 0
+    # Progress is checkpointed to storage every few pieces, so a crash resumes instead of starting over.
+    ckpt_key = f'jobs/{job.id}/partial.json.gz'
+    try:
+        r = requests.get(f'{job.cfg["media"]}/{ckpt_key}', timeout=120)
+        if r.ok:
+            c = json.loads(gzip.decompress(r.content))
+            if abs(c['duration'] - duration) < 1 and c['cuts'] == [round(x, 3) for x in cuts]:
+                rows, words, seg_id, skipped, first = c['rows'], c['words'], c['seg_id'], c['skipped'], c['next']
+                print(f'Resuming from piece {first} of {len(cuts) - 1}', flush=True)
+    except Exception as e: print('no checkpoint:', e, flush=True)
     t0 = time.time()
-    # Same settings as the Colab notebook: word timestamps, no carry-over between chunks, voice-activity filter, title/author prompt.
-    for lo, hi in zip(cuts, cuts[1:]):
-        wav = W / 'chunk.wav'
+    origin = cuts[first] if first < len(cuts) else duration
+
+    def report(done, force=False):
+        spent = time.time() - t0
+        # Time left = remaining audio at the speed so far, plus the alignment, splitting and upload that follow (a few minutes plus ~30 s per hour of audio).
+        eta = (duration - done) * spent / max(done - origin, 1) + 120 + 30 * duration / 3600 if done - origin > 120 else None
+        job.progress('transcribe', 30 + 40 * min(1, done / duration), f'Transcribing: {int(done // 60)} of {int(duration // 60)} minutes', force=force, eta=eta, pos=done)
+
+    def run(wav, vad, lo):
+        # Materialise the generator: some pieces make the word-timing step raise part-way through.
+        out = []
+        for sg in model.transcribe(str(wav), language='en', word_timestamps=True, condition_on_previous_text=False, vad_filter=vad, beam_size=5, initial_prompt=prompt)[0]:
+            out.append(sg); report(lo + float(sg.end))
+        return out
+
+    def piece(lo, hi, depth=0):
+        """Transcribe [lo, hi). If the model errors, retry without the voice filter, then in halves; skip only what still fails."""
+        wav = W / f'chunk-{depth}.wav'
         sh(['ffmpeg', '-v', 'error', '-y', '-ss', f'{lo:.3f}', '-t', f'{hi - lo:.3f}', '-i', src, '-ac', '1', '-ar', '16000', wav])
-        segments, info = model.transcribe(str(wav), language='en', word_timestamps=True, condition_on_previous_text=False, vad_filter=True, beam_size=5, initial_prompt=prompt)
-        for seg in segments:
-            ws = [{'word': w.word, 'start': lo + float(w.start), 'end': lo + float(w.end), 'probability': float(w.probability)} for w in (seg.words or [])]
-            words.extend(ws); rows.append({'id': seg_id, 'start': lo + float(seg.start), 'end': lo + float(seg.end), 'text': seg.text, 'words': ws}); seg_id += 1
-            done = lo + float(seg.end); spent = time.time() - t0
-            # Time left = remaining audio at the speed so far, plus the alignment, splitting and upload that follow (a few minutes plus ~30 s per hour of audio).
-            eta = (duration - done) * spent / max(done, 1) + 120 + 30 * duration / 3600 if done > 120 else None
-            job.progress('transcribe', 30 + 40 * min(1, done / duration), f'Transcribing: {int(done // 60)} of {int(duration // 60)} minutes', eta=eta, pos=done)
+        for vad in (True, False):
+            try: return [(lo, sg) for sg in run(wav, vad, lo)]
+            except Exception as e: print(f'piece {lo:.0f}-{hi:.0f}s failed (vad={vad}): {e}', flush=True)
         wav.unlink(missing_ok=True)
+        if depth < 3 and hi - lo > 20:
+            mid = (lo + hi) / 2
+            return piece(lo, mid, depth + 1) + piece(mid, hi, depth + 1)
+        skipped.append([round(lo, 1), round(hi, 1)]); return []
+
+    for k in range(first, len(cuts) - 1):
+        lo, hi = cuts[k], cuts[k + 1]
+        for base, seg in piece(lo, hi):
+            ws = [{'word': w.word, 'start': base + float(w.start), 'end': base + float(w.end), 'probability': float(w.probability)} for w in (seg.words or [])]
+            words.extend(ws); rows.append({'id': seg_id, 'start': base + float(seg.start), 'end': base + float(seg.end), 'text': seg.text, 'words': ws}); seg_id += 1
+        report(hi, force=True)
+        if (k + 1) % 4 == 0 and k + 1 < len(cuts) - 1:
+            part = W / 'partial.json.gz'
+            with gzip.open(part, 'wb', compresslevel=3) as f: f.write(json.dumps({'duration': duration, 'cuts': [round(x, 3) for x in cuts], 'rows': rows, 'words': words, 'seg_id': seg_id, 'skipped': skipped, 'next': k + 1}).encode())
+            try: job.upload(ckpt_key, part, 'application/gzip', 'no-store')
+            except Exception as e: print('checkpoint not saved:', e, flush=True)
     took = time.time() - t0
     if len(words) < duration / 6: raise RuntimeError(f'The transcript looks too short ({len(words)} words for {duration / 3600:.1f} h of audio).')
     loops = max((sum(1 for _ in g) for _, g in __import__('itertools').groupby(r['text'].strip().lower() for r in rows)), default=0)
     return {'text': ' '.join(r['text'] for r in rows), 'segments': rows, 'words': words, 'language': 'en',
             'metadata': {'model': 'faster-whisper/turbo', 'word_timestamps': True, 'timebase': 'seconds from start of complete audiobook', 'duration': duration,
-                         'segment_count': len(rows), 'word_count': len(words), 'quality_passed': loops < 8, 'repeated_segment_run': loops,
-                         'transcribe_seconds': round(took, 1), 'speed_x_realtime': round(duration / took, 1)}}
+                         'segment_count': len(rows), 'word_count': len(words), 'skipped_ranges': skipped, 'quality_passed': loops < 8 and not skipped, 'repeated_segment_run': loops,
+                         'transcribe_seconds': round(took, 1), 'speed_x_realtime': round((duration - origin) / max(took, 1), 1)}}
 
 
 def split_chapters(out, book_id, meta):
