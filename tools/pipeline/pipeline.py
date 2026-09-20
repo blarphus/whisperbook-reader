@@ -340,14 +340,26 @@ def process(job):
     if not probe.get('chapters'): raise RuntimeError('The audiobook has no chapter marks.')
     with open(audio, 'rb') as fh: sha = hashlib.file_digest(fh, 'sha256').hexdigest()  # provenance in the manifest
 
-    # Whisper works on 16 kHz mono; a small Opus copy keeps memory and disk use low and keeps the same timeline.
-    job.progress('transcribe', 17, 'Preparing the audio for transcription', force=True)
-    small = W / 'audio-16k.opus'
-    sh(['ffmpeg', '-v', 'error', '-y', '-i', audio, '-vn', '-map', '0:a:0', '-ac', '1', '-ar', '16000', '-c:a', 'libopus', '-b:a', '24k', '-application', 'voip', small])
-    prompt = f'{cfg["title"]} by {cfg["author"]}.'
-    transcript = transcribe(job, str(small), duration, prompt)
+    # A finished transcript is kept in storage, so a later step failing never costs another hour of GPU time.
     tpath = W / 'transcript.whisper.json.gz'
-    with gzip.open(tpath, 'wb', compresslevel=6) as f: f.write(json.dumps(transcript, ensure_ascii=False, separators=(',', ':')).encode())
+    transcript = None
+    try:
+        r = requests.get(f'{cfg["media"]}/jobs/{job.id}/transcript.whisper.json.gz', timeout=120)
+        if r.ok:
+            cand = json.loads(gzip.decompress(r.content))
+            if abs(cand['metadata']['duration'] - duration) < 1: transcript = cand; tpath.write_bytes(r.content)
+    except Exception as e: print('no saved transcript:', e, flush=True)
+    if transcript:
+        job.progress('transcribe', 60, 'Using the transcript saved from the earlier run', force=True)
+    else:
+        # Whisper works on 16 kHz mono; a small Opus copy keeps memory and disk use low and keeps the same timeline.
+        job.progress('transcribe', 17, 'Preparing the audio for transcription', force=True)
+        small = W / 'audio-16k.opus'
+        sh(['ffmpeg', '-v', 'error', '-y', '-i', audio, '-vn', '-map', '0:a:0', '-ac', '1', '-ar', '16000', '-c:a', 'libopus', '-b:a', '24k', '-application', 'voip', small])
+        prompt = f'{cfg["title"]} by {cfg["author"]}.'
+        transcript = transcribe(job, str(small), duration, prompt)
+        with gzip.open(tpath, 'wb', compresslevel=6) as f: f.write(json.dumps(transcript, ensure_ascii=False, separators=(',', ':')).encode())
+        job.upload(f'jobs/{job.id}/transcript.whisper.json.gz', tpath, 'application/gzip', 'no-store')
 
     job.progress('align', 62, 'Matching the transcript to the ebook' if epub else 'Building the reading text from the transcript', force=True)
     if epub:
@@ -380,7 +392,7 @@ def process(job):
     markers = meta['markers']
     seg_dir = W / 'segments'; shutil.rmtree(seg_dir, ignore_errors=True); seg_dir.mkdir()
     for i, m in enumerate(markers):
-        sh(['ffmpeg', '-v', 'error', '-y', '-ss', f'{m["start"]:.3f}', '-to', f'{m["end"]:.3f}', '-i', audio, '-map', '0:a:0', '-vn', '-c', 'copy', seg_dir / f'segment-{i:03d}.{ext}'])
+        sh(['ffmpeg', '-v', 'error', '-y', '-ss', f'{m["start"]:.3f}', '-t', f'{m["end"] - m["start"]:.3f}', '-i', audio, '-map', '0:a:0', '-vn', '-c', 'copy', seg_dir / f'segment-{i:03d}.{ext}'])
         job.progress('split', 72 + 6 * (i + 1) / len(markers), f'Splitting the audio: chapter {i + 1} of {len(markers)}', item=i + 1)
     files = sorted(seg_dir.glob('segment-*'))
     total = sum(float(json.loads(sh(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'json', f]).stdout)['format']['duration']) for f in files)
