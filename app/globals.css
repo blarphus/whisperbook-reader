@@ -156,3 +156,7 @@
 @keyframes definition-pulse{50%{opacity:.45}}
 .definition-word+.definition-list{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .definition-hint{margin:2px 0 8px;font:italic 13px/1.4 Georgia,serif;color:var(--muted-foreground)}
+
+/* Long book titles wrap onto extra lines instead of running into the next card. */
+.book-grid .book-info h2,.book-card .book-info h2{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;width:fit-content;max-width:100%;min-width:0}
+.book-card .book-info h2{display:block;background-position:0 100%;background-repeat:no-repeat}
