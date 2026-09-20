@@ -1,3 +1,4 @@
+import {preparedKeys,r2Origin} from '../../../../lib/drive';
 type DriveFile={id:string;type:string};
 const books:Record<string,Record<string,DriveFile>>={'dungeon-crawler-carl':{
  audio:{id:'10_SYUSwZwMzUae3YVZ4qQr-HKFX-cf_a',type:'audio/mp4'},
@@ -37,11 +38,11 @@ const books:Record<string,Record<string,DriveFile>>={'dungeon-crawler-carl':{
 },'bad-beginning':{audio:{id:'1a1Q8EneIitIh7Z8BQ8kIoJAo-Xw54O-o',type:'audio/mp4'},prepared:{id:'1LE2C6_Nw3U4hGl1sNumQpZdKEpp52WFJ',type:'application/json; charset=utf-8'}},'harry-potter':{audio:{id:'1gVuElWYYn0yyfliFYKUeb4q-R8ry4isG',type:'audio/ogg; codecs=opus'},prepared:{id:'1tVKydOfk7aGDrqFokr1xA8qIOxYEXrkP',type:'application/json; charset=utf-8'}}};
 export async function GET(request:Request,{params}:{params:Promise<{asset:string}>}){
  const {asset}=await params;const id=new URL(request.url).searchParams.get('book')||'dungeon-crawler-carl';
- if(id==='the-lightning-thief'&&asset==='prepared'){
-  const upstream=await fetch('https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev/reader/the-lightning-thief/7e920cb4c2ccba7c.json.gz',{signal:request.signal});
+ if(asset==='prepared'&&Object.hasOwn(preparedKeys,id)){
+  // Reader packages live in R2; fetch them server-side so browsers never need CORS access to the bucket.
+  const upstream=await fetch(`${r2Origin}/${preparedKeys[id]}`,{signal:request.signal});
   if(!upstream.ok||!upstream.body)return new Response('Reader package unavailable',{status:502});
-  const headers=new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'public, max-age=3600'});
-  return new Response(upstream.body.pipeThrough(new DecompressionStream('gzip')),{status:200,headers});
+  return new Response(upstream.body,{status:200,headers:{'Content-Type':'application/gzip','Cache-Control':'public, max-age=3600'}});
  }
  const file=Object.hasOwn(books,id)&&Object.hasOwn(books[id],asset)?books[id][asset]:undefined;if(!file)return new Response('Not found',{status:404});
  const range=request.headers.get('range');if(range&&!/^bytes=(?:\d+-\d*|-\d+)$/.test(range))return new Response('Invalid range',{status:416});

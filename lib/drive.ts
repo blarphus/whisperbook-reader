@@ -9,9 +9,10 @@ const files: Record<string, Record<string, string>> = {
   "the-martian": {"audio": "1qfXdR8rL6eK_1G5nLeTzO4UudNqvuslg", "prepared": "1BRbf4C22MzGYHepCpDTV26VZnqGo-BH5", "epub": "1DYux1Dz-z1amrUygf-X92hRD1GylZQ-B", "alignment": "19LeJq-SQyArGBnEJz80ixs4kCBDqIaot", "cover": "1tNhRqXt15t5f16VMMj100_Ih6DF7Nm9i"},
   "the-lightning-thief": {"audio":"", "prepared":"", "epub":"", "alignment":"", "cover":""},
 };
+export const r2Origin = 'https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev';
 export const r2AudioBase = 'https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev/audio';
 const r2Base = 'https://pub-9a0aace9d51d4989bd6bcfa748a91430.r2.dev';
-const preparedKeys: Record<string, string> = {
+export const preparedKeys: Record<string, string> = {
   'dungeon-crawler-carl': 'reader/dungeon-crawler-carl/9d81f65a2e919ff9.json.gz',
   'the-car': 'reader/the-car/ba6e681221fdc09f.json.gz',
   scythe: 'reader/scythe/9733a8978974a4a0.json.gz',
@@ -38,7 +39,8 @@ export function preparedFallbackURL(book: string) {
 }
 
 export function driveURL(book: string, asset: string) {
-  if (asset === 'prepared' && preparedKeys[book]) return `${r2Base}/${preparedKeys[book]}`;
+  // Served through our own Worker (same origin, no CORS needed); the Worker reads it from R2 server-side.
+  if (asset === 'prepared' && preparedKeys[book]) return `/api/book/prepared?book=${encodeURIComponent(book)}`;
   if (files[book] && asset === 'cover') {
     const id = files[book].cover;
     if (id) return `https://drive.google.com/thumbnail?id=${id}&sz=w600`;
