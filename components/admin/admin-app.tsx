@@ -14,7 +14,8 @@ const ext=(name:string)=>(name.match(/\.([A-Za-z0-9]{1,6})$/)?.[1]||'bin').toLow
 
 export function AdminApp(){
  const [signedIn,setSignedIn]=useState<boolean|null>(null);
- useEffect(()=>{api<{signedIn:boolean}>('/api/admin/login').then(r=>setSignedIn(r.signedIn)).catch(()=>setSignedIn(false))},[]);
+ useEffect(()=>{if(location.protocol==='http:'&&!/^(localhost|127\.)/.test(location.hostname)){location.replace(location.href.replace('http:','https:'));return}
+  api<{signedIn:boolean}>('/api/admin/login').then(r=>setSignedIn(r.signedIn)).catch(()=>setSignedIn(false))},[]);
  if(signedIn===null)return <main className="admin"><p className="admin-muted">Loading…</p></main>;
  return signedIn?<Dashboard onSignOut={()=>{void api('/api/admin/login',{method:'DELETE'}).finally(()=>setSignedIn(false))}}/>:<Login onDone={()=>setSignedIn(true)}/>;
 }
