@@ -13,7 +13,8 @@
     "format": "oxfmt",
     "deploy": "vinext build && wrangler deploy -c dist/server/wrangler.json --env-file scripts/empty.env --domains studentbookreader.com --domains www.studentbookreader.com",
     "build:dictionary": "node scripts/build-dictionary.mjs",
-    "build:dark": "python3 scripts/gen-dark-css.py"
+    "build:dark": "python3 scripts/gen-dark-css.py",
+    "build:simple-dictionary": "python3 scripts/build-simple-dictionary.py simplewiktionary-latest-pages-articles.xml.bz2"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

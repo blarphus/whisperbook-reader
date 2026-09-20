@@ -160,3 +160,5 @@
 /* Long book titles wrap onto extra lines instead of running into the next card. */
 .book-grid .book-info h2,.book-card .book-info h2{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;width:fit-content;max-width:100%;min-width:0}
 .book-card .book-info h2{display:block;background-position:0 100%;background-repeat:no-repeat}
+
+.definition-credit{margin:10px 0 0;font:12px/1.4 Arial,Helvetica,sans-serif;color:var(--muted-foreground)}.definition-credit a{text-decoration:underline}
