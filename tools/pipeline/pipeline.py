@@ -310,39 +310,42 @@ def split_chapters(out, book_id, meta):
     data = json.loads(gzip.decompress(path.read_bytes()))
     marks = [m for m in data['markers'] if m['end'] > data['introEnd'] and m['start'] < data['creditsStart']]
     if len(data['chapters']) * 2 >= len(marks): return
-    BLOCK = ['p', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
     result = []
     for ch in data['chapters']:
         cues, first_cue, last_cue = ch['cues'], ch['start'], ch['end']
         inside = [m for m in marks if first_cue + 20 < m['start'] < last_cue]
         if not inside: result.append(ch); continue
         soup = BeautifulSoup(ch['html'], 'html.parser')
-        first_word = {}
-        for block in soup.find_all(BLOCK):
-            if block.find(BLOCK): continue
-            w = block.find('span', attrs={'data-word': True})
-            if w: first_word[id(block)] = int(w['data-word'])
-        starts = sorted(set(first_word.values()))
+        toks = [w.get_text().strip() for w in soup.find_all('span', attrs={'data-word': True})]
+        starts = sorted({a for a, _ in ch['sentences']})
+
+        def cut_for(m):
+            """Word index where the text of this audio chapter begins: at its printed heading ('PART ... Chapter N') when the ebook has one, else at a sentence start."""
+            k = next((i for i, c in enumerate(cues) if c[0] >= m['start'] - 1.5), None)
+            if k is None: return None
+            num = re.search(r'(?:chapter|ch\.?)\s*(\d+)', m['title'], re.I)
+            hi = next((i for i, c in enumerate(cues) if c[0] > m['start'] + 45), len(cues))
+            for i in range(max(0, k - 3), min(hi, len(toks) - 1)):
+                if toks[i].lower() == 'chapter' and re.fullmatch(r'\d+', toks[i + 1] or '') and (not num or int(toks[i + 1]) == int(num.group(1))):
+                    part = next((i - d for d in range(1, 9) if i - d >= 0 and toks[i - d].strip('.,:;').upper() == 'PART'), None)
+                    return part if part is not None else i
+            return max((x for x in starts if x <= k), default=0)
+
         cuts, cut_titles = [0], [next((m['title'] for m in reversed(marks) if m['start'] <= first_cue + 5), ch['title'])]
         for m in inside:
-            k = next((i for i, c in enumerate(cues) if c[0] >= m['start'] - 1.5), None)
-            if k is None: continue
-            k = max((x for x in starts if x <= k), default=0)
-            if k > cuts[-1]: cuts.append(k); cut_titles.append(m['title'])
+            k = cut_for(m)
+            if k is not None and k > cuts[-1]: cuts.append(k); cut_titles.append(m['title'])
         cuts.append(len(cues))
         for j, title in enumerate(cut_titles):
             a, b = cuts[j], cuts[j + 1]
             piece = BeautifulSoup(ch['html'], 'html.parser')
-            for block in piece.find_all(BLOCK):
-                if block.find(BLOCK): continue
-                w = block.find('span', attrs={'data-word': True})
-                if w is None: 
-                    if j: block.decompose()
-                    continue
-                idx = int(w['data-word'])
-                if not a <= idx < b: block.decompose()
-            for w in piece.find_all('span', attrs={'data-word': True}): w['data-word'] = str(int(w['data-word']) - a)
-            result.append(dict(title=title, html=str(piece), cues=cues[a:b], sentences=[[x - a, y - a] for x, y in ch['sentences'] if a <= x < b], start=cues[a][0], end=cues[b - 1][1]))
+            for w in piece.find_all('span', attrs={'data-word': True}):
+                n = int(w['data-word'])
+                if a <= n < b: w['data-word'] = str(n - a)
+                else: w.decompose()
+            for block in piece.find_all(['p', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+                if not block.find(['p', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']) and not block.get_text().strip(): block.decompose()
+            result.append(dict(title=title, html=str(piece), cues=cues[a:b], sentences=[[x - a, min(y, b) - a] for x, y in ch['sentences'] if a <= x < b], start=cues[a][0], end=cues[b - 1][1]))
     for x, y in zip(result, result[1:]): x['end'] = y['start']
     result[-1]['end'] = data['creditsStart']
     data['chapters'] = result
