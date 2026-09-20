@@ -40,12 +40,13 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
  try{
   switch(b.action){
    case 'files':{
-    job.files={audio:fileRef(b.files?.audio,id),epub:fileRef(b.files?.epub,id),cover:fileRef(b.files?.cover,id)};
-    if(!job.files.audio||!job.files.epub)return reply({error:'Both the audiobook and the ebook are needed.'},400);
+    job.files={audio:fileRef(b.files?.audio,id),epub:fileRef(b.files?.epub,id),cover:fileRef(b.files?.cover,id)}
+    if(Array.isArray(b.files?.audioParts)){const parts=b.files.audioParts.slice(0,40).map((x:unknown)=>fileRef(x,id));if(parts.some((x:unknown)=>!x))return reply({error:'Invalid audio file list.'},400);job.files.audioParts=parts as FileRef[]}
+    if(!job.files.audio)return reply({error:'The audiobook is needed.'},400);
     job.status='uploaded';job.error=undefined;await saveJob(job);break;
    }
    case 'inspect':
-    if(!job.files.audio||!job.files.epub)return reply({error:'Upload the files first.'},400);
+    if(!job.files.audio)return reply({error:'Upload the files first.'},400);
     await launchJob(job,'inspect',origin);break;
    case 'process':
     if(job.status!=='inspected')return reply({error:'Check the chapters first.'},400);

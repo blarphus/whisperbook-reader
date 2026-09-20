@@ -42,7 +42,7 @@ export async function POST(request:Request,{params}:{params:Promise<{id:string}>
  const b=(await request.json().catch(()=>({}))) as any;
  switch(b.event){
   case 'progress':
-   j.progress={stage:String(b.stage||''),pct:Math.max(0,Math.min(100,Number(b.pct)||0)),message:String(b.message||'').slice(0,300),at:new Date().toISOString()};
+   j.progress={stage:String(b.stage||''),pct:Math.round(Math.max(0,Math.min(100,Number(b.pct)||0))*100)/100,message:String(b.message||'').slice(0,300),at:new Date().toISOString(),...(Number.isFinite(Number(b.eta))&&b.eta!==null?{eta:Math.round(Number(b.eta))}:{})};
    await saveJob(j);break;
   case 'inspected':
    j.chapters=Array.isArray(b.chapters)?b.chapters.slice(0,500).map((c:any)=>({title:String(c.title||'').slice(0,200),start:Number(c.start)||0,end:Number(c.end)||0})):[];

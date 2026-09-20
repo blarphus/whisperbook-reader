@@ -14,6 +14,7 @@ export async function launchJob(job:Job,mode:'inspect'|'process',origin:string){
  const cfg={
   jobId:job.id,mode,base:origin,token,bookId:job.bookId,title:job.title,author:job.author,narrator:job.narrator,classes:job.classes,
   media:r2Origin,audio:job.files.audio&&{url:`${r2Origin}/${job.files.audio.key}`,name:job.files.audio.name},
+  audioParts:job.files.audioParts?.map(f=>({url:`${r2Origin}/${f.key}`,name:f.name})),
   epub:job.files.epub&&{url:`${r2Origin}/${job.files.epub.key}`,name:job.files.epub.name},
   sectionIndices:job.sectionIndices,
   cover:job.files.cover&&{url:`${r2Origin}/${job.files.cover.key}`,name:job.files.cover.name},

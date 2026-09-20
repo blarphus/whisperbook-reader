@@ -283,3 +283,4 @@
 .admin-menu label:hover,.admin-menu a:hover,.admin-menu button:hover{background:rgba(127,127,127,.14)}.admin-menu .danger{color:#c0392b}.admin-menu hr{width:100%;border:0;border-top:1px solid var(--border);margin:4px 0}
 @media(max-width:600px){.admin-tabs button.add{margin-left:0}}
 .admin .admin-menu label{flex-direction:row;align-items:center;justify-content:flex-start;font-weight:400}.admin .admin-menu input[type=checkbox]{width:16px;height:16px;min-width:0;padding:0;margin:0;flex:none}
+.admin-running .admin-progress{position:relative}.admin-running .admin-progress button{align-self:flex-start;margin-top:6px}

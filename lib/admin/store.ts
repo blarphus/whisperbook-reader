@@ -6,10 +6,10 @@ export type Job={
  id:string;bookId:string;createdAt:string;updatedAt:string;
  status:'draft'|'uploaded'|'inspecting'|'inspected'|'processing'|'review'|'done'|'failed'|'cancelled';
  title:string;author:string;narrator:string;classes:string[];
- files:{audio?:FileRef;epub?:FileRef;cover?:FileRef};
+ files:{audio?:FileRef;audioParts?:FileRef[];epub?:FileRef;cover?:FileRef};
  sectionIndices?:number[];tokenHash?:string;kernel?:string;kernelUrl?:string;
  chapters?:{title:string;start:number;end:number}[];inspect?:Record<string,unknown>;
- progress?:{stage:string;pct:number;message:string;at:string};
+ progress?:{stage:string;pct:number;message:string;at:string;eta?:number};
  result?:Record<string,unknown>;error?:string;
 };
 
