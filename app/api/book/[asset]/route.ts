@@ -1,4 +1,5 @@
 import {preparedKeys,r2Origin} from '../../../../lib/drive';
+import {remoteBooks} from '../../../../lib/remote-catalog-server';
 type DriveFile={id:string;type:string};
 const books:Record<string,Record<string,DriveFile>>={'dungeon-crawler-carl':{
  audio:{id:'10_SYUSwZwMzUae3YVZ4qQr-HKFX-cf_a',type:'audio/mp4'},
@@ -38,9 +39,10 @@ const books:Record<string,Record<string,DriveFile>>={'dungeon-crawler-carl':{
 },'bad-beginning':{audio:{id:'1a1Q8EneIitIh7Z8BQ8kIoJAo-Xw54O-o',type:'audio/mp4'},prepared:{id:'1LE2C6_Nw3U4hGl1sNumQpZdKEpp52WFJ',type:'application/json; charset=utf-8'}},'harry-potter':{audio:{id:'1gVuElWYYn0yyfliFYKUeb4q-R8ry4isG',type:'audio/ogg; codecs=opus'},prepared:{id:'1tVKydOfk7aGDrqFokr1xA8qIOxYEXrkP',type:'application/json; charset=utf-8'}}};
 export async function GET(request:Request,{params}:{params:Promise<{asset:string}>}){
  const {asset}=await params;const id=new URL(request.url).searchParams.get('book')||'dungeon-crawler-carl';
- if(asset==='prepared'&&Object.hasOwn(preparedKeys,id)){
+ const preparedKey=asset==='prepared'?(Object.hasOwn(preparedKeys,id)?preparedKeys[id]:(await remoteBooks()).find(b=>b.id===id)?.prepared):undefined;
+ if(preparedKey){
   // Reader packages live in R2; fetch them server-side so browsers never need CORS access to the bucket.
-  const upstream=await fetch(`${r2Origin}/${preparedKeys[id]}`,{signal:request.signal});
+  const upstream=await fetch(`${r2Origin}/${preparedKey}`,{signal:request.signal});
   if(!upstream.ok||!upstream.body)return new Response('Reader package unavailable',{status:502});
   return new Response(upstream.body,{status:200,headers:{'Content-Type':'application/gzip','Cache-Control':'public, max-age=3600'}});
  }
