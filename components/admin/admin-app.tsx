@@ -108,7 +108,7 @@ function ChapterProgress({chapters,p,duration}:{chapters:{title:string;start:num
  if(!p||!chapters.length)return null;
  const rows=chapters.map((c,i)=>{
   let pct=0,label='Waiting';
-  const pos=p.pos??(p.stage==='transcribe'&&duration?(p.pct-20)/40*duration:undefined);
+  const pos=p.pos??(p.stage==='transcribe'&&duration?(p.pct-30)/40*duration:undefined);
   if(p.stage==='transcribe'&&pos!=null){pct=Math.max(0,Math.min(100,100*(pos-c.start)/Math.max(1,c.end-c.start)));label=pct>=100?'Transcribed':pct>0?'Transcribing':'Waiting'}
   else if(['align','split','upload'].includes(p.stage)){pct=100;label='Transcribed';
    if(p.stage==='split'||p.stage==='upload'){const done=p.item??0;label=p.stage==='split'?(i<done?'Audio cut':'Transcribed'):(i<done?'Uploaded':'Audio cut')}}

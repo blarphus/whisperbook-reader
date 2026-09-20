@@ -115,6 +115,43 @@ def join_audio(parts, chapters, dest):
     return dest
 
 
+def encode_for_whisper(job, audio, duration, dest, lo=12.0, hi=30.0):
+    """16 kHz mono Opus copy for transcription. Encoded in parallel pieces (one per CPU core) with real progress, then joined."""
+    n = max(1, min(os.cpu_count() or 2, 4, int(duration // 600)))
+    step = duration / n
+    pieces = [dest.with_name(f'enc-{i}.opus') for i in range(n)]
+    logs = [dest.with_name(f'enc-{i}.progress') for i in range(n)]
+    procs = []
+    for i in range(n):
+        cmd = ['ffmpeg', '-v', 'error', '-y', '-progress', str(logs[i]), '-ss', f'{i * step:.3f}', '-t', f'{(duration - i * step) if i == n - 1 else step:.3f}', '-i', str(audio),
+               '-vn', '-map', '0:a:0', '-ac', '1', '-ar', '16000', '-c:a', 'libopus', '-b:a', '24k', '-application', 'voip', str(pieces[i])]
+        procs.append(subprocess.Popen(cmd, stderr=subprocess.PIPE, text=True))
+    t0 = time.time()
+    def done_seconds():
+        total = 0.0
+        for lg in logs:
+            try:
+                m = re.findall(r'out_time_us=(\d+)', lg.read_text())
+                total += int(m[-1]) / 1e6 if m else 0.0
+            except Exception: pass
+        return min(total, duration)
+    while any(pr.poll() is None for pr in procs):
+        time.sleep(3)
+        got = done_seconds(); frac = got / duration
+        left = (time.time() - t0) * (1 - frac) / max(frac, 0.01) if frac > 0.02 else None
+        # After this comes transcription at about 25x realtime plus the matching, splitting and uploading.
+        eta = left + duration / 25 + 120 + 30 * duration / 3600 if left is not None else None
+        job.progress('prepare', lo + (hi - lo) * frac, f'Converting the audio for transcription: {frac * 100:.1f}% ({int(got // 60)} of {int(duration // 60)} minutes)', eta=eta, pos=got)
+    for pr in procs:
+        if pr.returncode: raise RuntimeError('Audio conversion failed: ' + (pr.stderr.read() or '')[-800:])
+    lst = dest.with_suffix('.txt'); lst.write_text(''.join(f"file '{pc}'\n" for pc in pieces))
+    sh(['ffmpeg', '-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-c', 'copy', dest])
+    got = float(json.loads(sh(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'json', dest]).stdout)['format']['duration'])
+    if abs(got - duration) > 1.0: raise RuntimeError(f'The converted audio is {got:.1f}s but the recording is {duration:.1f}s.')
+    for pc in pieces + logs: pc.unlink(missing_ok=True)
+    return dest
+
+
 def download(job, item, dest, stage, lo, hi):
     dest.parent.mkdir(parents=True, exist_ok=True)
     with requests.get(item['url'], stream=True, timeout=120) as r:
@@ -200,7 +237,7 @@ def transcribe(job, src, duration, prompt):
     import torch
     from faster_whisper import WhisperModel
     assert torch.cuda.is_available(), 'No GPU is attached to this Kaggle session'
-    job.progress('transcribe', 20, f'Loading Whisper on {torch.cuda.get_device_name(0)}', force=True)
+    job.progress('transcribe', 30, f'Loading Whisper on {torch.cuda.get_device_name(0)}', force=True)
     model = WhisperModel('turbo', device='cuda', compute_type='float16')
     # Long books do not fit in memory in one go (the whole recording is decoded at once), so work in ~15 minute pieces cut where the narrator pauses.
     cuts = plan_chunks(src, duration)
@@ -217,7 +254,7 @@ def transcribe(job, src, duration, prompt):
             done = lo + float(seg.end); spent = time.time() - t0
             # Time left = remaining audio at the speed so far, plus the alignment, splitting and upload that follow (a few minutes plus ~30 s per hour of audio).
             eta = (duration - done) * spent / max(done, 1) + 120 + 30 * duration / 3600 if done > 120 else None
-            job.progress('transcribe', 20 + 40 * min(1, done / duration), f'Transcribing: {int(done // 60)} of {int(duration // 60)} minutes', eta=eta, pos=done)
+            job.progress('transcribe', 30 + 40 * min(1, done / duration), f'Transcribing: {int(done // 60)} of {int(duration // 60)} minutes', eta=eta, pos=done)
         wav.unlink(missing_ok=True)
     took = time.time() - t0
     if len(words) < duration / 6: raise RuntimeError(f'The transcript looks too short ({len(words)} words for {duration / 3600:.1f} h of audio).')
@@ -350,18 +387,17 @@ def process(job):
             if abs(cand['metadata']['duration'] - duration) < 1: transcript = cand; tpath.write_bytes(r.content)
     except Exception as e: print('no saved transcript:', e, flush=True)
     if transcript:
-        job.progress('transcribe', 60, 'Using the transcript saved from the earlier run', force=True)
+        job.progress('transcribe', 70, 'Using the transcript saved from the earlier run', force=True)
     else:
         # Whisper works on 16 kHz mono; a small Opus copy keeps memory and disk use low and keeps the same timeline.
-        job.progress('transcribe', 17, 'Preparing the audio for transcription', force=True)
-        small = W / 'audio-16k.opus'
-        sh(['ffmpeg', '-v', 'error', '-y', '-i', audio, '-vn', '-map', '0:a:0', '-ac', '1', '-ar', '16000', '-c:a', 'libopus', '-b:a', '24k', '-application', 'voip', small])
+        job.progress('prepare', 12, 'Converting the audio for transcription', force=True)
+        small = encode_for_whisper(job, audio, duration, W / 'audio-16k.opus')
         prompt = f'{cfg["title"]} by {cfg["author"]}.'
         transcript = transcribe(job, str(small), duration, prompt)
         with gzip.open(tpath, 'wb', compresslevel=6) as f: f.write(json.dumps(transcript, ensure_ascii=False, separators=(',', ':')).encode())
         job.upload(f'jobs/{job.id}/transcript.whisper.json.gz', tpath, 'application/gzip', 'no-store')
 
-    job.progress('align', 62, 'Matching the transcript to the ebook' if epub else 'Building the reading text from the transcript', force=True)
+    job.progress('align', 70, 'Matching the transcript to the ebook' if epub else 'Building the reading text from the transcript', force=True)
     if epub:
         (W / 'book').mkdir(exist_ok=True)
         link = W / 'book' / audio.name
@@ -380,7 +416,7 @@ def process(job):
         st, run_len = review['stats'], review['cues'].get('longest_interpolated_run', 0)
         weak = sorted((s for s in review['sections'] if s['wordCount'] >= 20 and s['coverage'] < 0.9), key=lambda s: s['coverage'])
         needs_review = st['coverage'] < MIN_COVERAGE or run_len > MAX_RUN or bool(weak) or not transcript['metadata']['quality_passed']
-        job.progress('align', 72, f'Matched {st["coverage"] * 100:.1f}% of the ebook’s words', force=True)
+        job.progress('align', 74, f'Matched {st["coverage"] * 100:.1f}% of the ebook’s words', force=True)
 
         split_chapters(out, book_id, meta)
     else:
@@ -388,23 +424,23 @@ def process(job):
         meta, nw = transcript_book(out, book_id, cfg, transcript, probe, duration)
         st, run_len, weak = {'coverage': 1.0, 'matched_words': nw, 'book_words': nw}, 0, []
         needs_review = not transcript['metadata']['quality_passed']
-        job.progress('align', 72, f'Built the reading text: {nw:,} words', force=True)
+        job.progress('align', 74, f'Built the reading text: {nw:,} words', force=True)
     markers = meta['markers']
     seg_dir = W / 'segments'; shutil.rmtree(seg_dir, ignore_errors=True); seg_dir.mkdir()
     for i, m in enumerate(markers):
         sh(['ffmpeg', '-v', 'error', '-y', '-ss', f'{m["start"]:.3f}', '-t', f'{m["end"] - m["start"]:.3f}', '-i', audio, '-map', '0:a:0', '-vn', '-c', 'copy', seg_dir / f'segment-{i:03d}.{ext}'])
-        job.progress('split', 72 + 6 * (i + 1) / len(markers), f'Splitting the audio: chapter {i + 1} of {len(markers)}', item=i + 1)
+        job.progress('split', 74 + 6 * (i + 1) / len(markers), f'Splitting the audio: chapter {i + 1} of {len(markers)}', item=i + 1)
     files = sorted(seg_dir.glob('segment-*'))
     total = sum(float(json.loads(sh(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'json', f]).stdout)['format']['duration']) for f in files)
     want = markers[-1]['end'] - markers[0]['start']
     if abs(total - want) > max(3.0, len(files) * 0.15): raise RuntimeError(f'The split audio adds up to {total:.0f}s but the chapters cover {want:.0f}s.')
 
     key = f'reader/{book_id}/{meta["assetRevision"]}.json.gz'
-    job.progress('upload', 79, 'Uploading the book', force=True)
+    job.progress('upload', 80, 'Uploading the book', force=True)
     job.upload(key, out / f'{book_id}.reader.json.gz', 'application/gzip')
     for i, f in enumerate(files):
         job.upload(f'audio/{book_id}/{f.name}', f, CONTENT_TYPES.get(ext, 'application/octet-stream'), 'public, max-age=31536000, immutable')
-        job.progress('upload', 79 + 18 * (i + 1) / len(files), f'Uploading audio: {i + 1} of {len(files)} chapters', item=i + 1)
+        job.progress('upload', 80 + 18 * (i + 1) / len(files), f'Uploading audio: {i + 1} of {len(files)} chapters', item=i + 1)
     cover_url = '/covers/placeholder.svg'
     cover_jpg = W / 'cover.jpg'
     if cover is None:  # fall back to the artwork embedded in the audiobook
