@@ -5,7 +5,7 @@ import {api,uploadFile} from './upload';
 import {CLASSES} from '../../lib/class-rules';
 type Job={id:string;bookId:string;status:string;title:string;author:string;narrator:string;classes:string[];chapters?:{title:string;start:number;end:number}[];
  inspect?:{duration?:number;codec?:string;epub?:{sections:number;words:number;titles:string[]};notes?:string[]};
- progress?:{stage:string;pct:number;message:string;at:string;eta?:number};result?:any;error?:string;kernelUrl?:string;createdAt:string};
+ progress?:{stage:string;pct:number;message:string;at:string;eta?:number;pos?:number;item?:number};result?:any;error?:string;kernelUrl?:string;createdAt:string};
 type Book={id:string;title:string;author:string;classes?:string[];hidden?:boolean;needsReview?:boolean;chapterCount?:number;duration:number;cover?:string;builtIn?:boolean};
 
 const clock=(t:number)=>{t=Math.max(0,Math.floor(t));const h=Math.floor(t/3600),m=Math.floor(t/60)%60,s=t%60;return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`};
@@ -103,6 +103,19 @@ function Dashboard({onSignOut}:{onSignOut:()=>void}){
  </main>;
 }
 
+// One row per audiobook chapter. While transcribing, each row fills as the narration reaches it; splitting and uploading then tick chapters off in order.
+function ChapterProgress({chapters,p,duration}:{chapters:{title:string;start:number;end:number}[];p?:Job['progress'];duration?:number}){
+ if(!p||!chapters.length)return null;
+ const rows=chapters.map((c,i)=>{
+  let pct=0,label='Waiting';
+  const pos=p.pos??(p.stage==='transcribe'&&duration?(p.pct-20)/40*duration:undefined);
+  if(p.stage==='transcribe'&&pos!=null){pct=Math.max(0,Math.min(100,100*(pos-c.start)/Math.max(1,c.end-c.start)));label=pct>=100?'Transcribed':pct>0?'Transcribing':'Waiting'}
+  else if(['align','split','upload'].includes(p.stage)){pct=100;label='Transcribed';
+   if(p.stage==='split'||p.stage==='upload'){const done=p.item??0;label=p.stage==='split'?(i<done?'Audio cut':'Transcribed'):(i<done?'Uploaded':'Audio cut')}}
+  return {title:c.title,pct,label}});
+ return <details className="admin-chapprog" open><summary>Progress by chapter</summary><ul>{rows.map((r,i)=><li key={i} className={r.pct>=100?'done':''}><span>{r.title}</span><progress max={100} value={r.pct}/><em>{r.pct>0&&r.pct<100?`${r.pct.toFixed(1)}%`:r.label}</em></li>)}</ul></details>;
+}
+
 function Wizard({jobId,onChange,onClose}:{jobId:string|null;onChange:()=>void;onClose:()=>void}){
  const [job,setJob]=useState<Job|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[upload,setUpload]=useState<{label:string;pct:number}|null>(null);
  const [form,setForm]=useState({title:'',author:'',narrator:'',classes:['English 9']});
@@ -183,6 +196,7 @@ function Wizard({jobId,onChange,onClose}:{jobId:string|null;onChange:()=>void;on
   {(s==='inspecting'||s==='processing')&&<div className="admin-progress"><div><span>{p?.message||'Starting…'}{etaText(p)}</span><b>{(p?.pct??0).toFixed(2)}%</b></div><progress max={100} value={p?.pct??0}/>
    <p className="admin-muted">{s==='processing'?'This usually takes 30–60 minutes for a full-length book. You can close this page; come back and press Continue.':'This usually takes a minute or two.'} {elapsed>0&&`Elapsed: ${elapsed} min. `}{job.kernelUrl&&<a href={job.kernelUrl} target="_blank" rel="noreferrer">See the Kaggle run</a>}</p>
    <button onClick={()=>act('cancel')} disabled={busy}>Cancel</button></div>}
+  {s==='processing'&&job.chapters&&<ChapterProgress chapters={job.chapters} p={p} duration={job.inspect?.duration}/>}
 
   {s==='inspected'&&job.chapters&&<div>
    <p>The audiobook has <b>{job.chapters.length} chapters</b> ({clock(job.inspect?.duration||0)}).{job.inspect?.epub&&<> The ebook has <b>{job.inspect.epub.sections} sections</b> and {job.inspect.epub.words.toLocaleString()} words.</>}</p>

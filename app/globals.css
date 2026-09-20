@@ -284,3 +284,10 @@
 @media(max-width:600px){.admin-tabs button.add{margin-left:0}}
 .admin .admin-menu label{flex-direction:row;align-items:center;justify-content:flex-start;font-weight:400}.admin .admin-menu input[type=checkbox]{width:16px;height:16px;min-width:0;padding:0;margin:0;flex:none}
 .admin-running .admin-progress{position:relative}.admin-running .admin-progress button{align-self:flex-start;margin-top:6px}
+
+.admin-chapprog{border:1px solid var(--border);border-radius:12px;padding:10px 14px}.admin-chapprog summary{cursor:pointer;font-weight:600}
+.admin-chapprog ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto}
+.admin-chapprog li{display:grid;grid-template-columns:minmax(0,1fr) 120px 84px;gap:10px;align-items:center;font-size:13px}
+.admin-chapprog li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.admin-chapprog li progress{width:100%;height:8px}.admin-chapprog li em{font-style:normal;color:var(--muted-foreground);text-align:right;font-variant-numeric:tabular-nums}
+.admin-chapprog li.done em{color:#2f6f3f}
+@media(max-width:600px){.admin-chapprog li{grid-template-columns:minmax(0,1fr) 70px 70px}}

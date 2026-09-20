@@ -40,11 +40,11 @@ class Job:
             time.sleep(2 * (attempt + 1))
         raise RuntimeError(f'could not reach the site for "{event}"')
 
-    def progress(self, stage, pct, message, force=False, eta=None):
+    def progress(self, stage, pct, message, force=False, eta=None, pos=None, item=None):
         if not force and time.time() - self._last < 4: return
         self._last = time.time()
         print(f'[{stage} {pct:.0f}%] {message}', flush=True)
-        try: self.post('progress', stage=stage, pct=pct, message=message, eta=eta)
+        try: self.post('progress', stage=stage, pct=pct, message=message, eta=eta, pos=pos, item=item)
         except Exception as e: print('progress not delivered:', e, flush=True)
 
     def upload(self, key, path, ctype, cache=None):
@@ -217,7 +217,7 @@ def transcribe(job, src, duration, prompt):
             done = lo + float(seg.end); spent = time.time() - t0
             # Time left = remaining audio at the speed so far, plus the alignment, splitting and upload that follow (a few minutes plus ~30 s per hour of audio).
             eta = (duration - done) * spent / max(done, 1) + 120 + 30 * duration / 3600 if done > 120 else None
-            job.progress('transcribe', 20 + 40 * min(1, done / duration), f'Transcribing: {int(done // 60)} of {int(duration // 60)} minutes', eta=eta)
+            job.progress('transcribe', 20 + 40 * min(1, done / duration), f'Transcribing: {int(done // 60)} of {int(duration // 60)} minutes', eta=eta, pos=done)
         wav.unlink(missing_ok=True)
     took = time.time() - t0
     if len(words) < duration / 6: raise RuntimeError(f'The transcript looks too short ({len(words)} words for {duration / 3600:.1f} h of audio).')
@@ -381,7 +381,7 @@ def process(job):
     seg_dir = W / 'segments'; shutil.rmtree(seg_dir, ignore_errors=True); seg_dir.mkdir()
     for i, m in enumerate(markers):
         sh(['ffmpeg', '-v', 'error', '-y', '-ss', f'{m["start"]:.3f}', '-to', f'{m["end"]:.3f}', '-i', audio, '-map', '0:a:0', '-vn', '-c', 'copy', seg_dir / f'segment-{i:03d}.{ext}'])
-        job.progress('split', 72 + 6 * (i + 1) / len(markers), f'Splitting the audio: chapter {i + 1} of {len(markers)}')
+        job.progress('split', 72 + 6 * (i + 1) / len(markers), f'Splitting the audio: chapter {i + 1} of {len(markers)}', item=i + 1)
     files = sorted(seg_dir.glob('segment-*'))
     total = sum(float(json.loads(sh(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'json', f]).stdout)['format']['duration']) for f in files)
     want = markers[-1]['end'] - markers[0]['start']
@@ -392,7 +392,7 @@ def process(job):
     job.upload(key, out / f'{book_id}.reader.json.gz', 'application/gzip')
     for i, f in enumerate(files):
         job.upload(f'audio/{book_id}/{f.name}', f, CONTENT_TYPES.get(ext, 'application/octet-stream'), 'public, max-age=31536000, immutable')
-        job.progress('upload', 79 + 18 * (i + 1) / len(files), f'Uploading audio: {i + 1} of {len(files)} chapters')
+        job.progress('upload', 79 + 18 * (i + 1) / len(files), f'Uploading audio: {i + 1} of {len(files)} chapters', item=i + 1)
     cover_url = '/covers/placeholder.svg'
     cover_jpg = W / 'cover.jpg'
     if cover is None:  # fall back to the artwork embedded in the audiobook

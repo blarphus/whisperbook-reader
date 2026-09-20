@@ -9,7 +9,7 @@ export type Job={
  files:{audio?:FileRef;audioParts?:FileRef[];epub?:FileRef;cover?:FileRef};
  sectionIndices?:number[];tokenHash?:string;kernel?:string;kernelUrl?:string;
  chapters?:{title:string;start:number;end:number}[];inspect?:Record<string,unknown>;
- progress?:{stage:string;pct:number;message:string;at:string;eta?:number};
+ progress?:{stage:string;pct:number;message:string;at:string;eta?:number;pos?:number;item?:number};
  result?:Record<string,unknown>;error?:string;
 };
 
