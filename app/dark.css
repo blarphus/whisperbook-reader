@@ -80,3 +80,5 @@ html[data-theme=dark] .speed-picker .speed-button,html[data-theme=dark] .speed-b
 html[data-theme=dark] .speed-picker .speed-button:hover{background:rgb(32,34,29)}
 html[data-theme=dark] .speed-menu{box-shadow:0 8px 24px rgba(30,35,27,.2)}
 html[data-theme=dark] .book-card:hover>img,html[data-theme=dark] .book-card:focus-visible>img{box-shadow:0 18px 32px rgba(30,35,27,.28)}
+html[data-theme=dark] .search-box:focus-within{box-shadow:0 0 0 3px rgba(59,79,66,.14)}
+html[data-theme=dark] .search-snippet mark{background:rgb(63,52,30);color:rgb(201,203,200)}
