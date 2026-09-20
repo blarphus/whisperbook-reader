@@ -464,13 +464,36 @@ def process(job):
         job.progress('align', 74, f'Built the reading text: {nw:,} words', force=True)
     markers = meta['markers']
     seg_dir = W / 'segments'; shutil.rmtree(seg_dir, ignore_errors=True); seg_dir.mkdir()
-    for i, m in enumerate(markers):
-        sh(['ffmpeg', '-v', 'error', '-y', '-ss', f'{m["start"]:.3f}', '-t', f'{m["end"] - m["start"]:.3f}', '-i', audio, '-map', '0:a:0', '-vn', '-c', 'copy', seg_dir / f'segment-{i:03d}.{ext}'])
+    # One pass with ffmpeg's segment muxer: pieces come out with clean, zero-based timestamps on every ffmpeg version (cutting one piece at a time
+    # left the original timestamps in some builds). Piece i starts at chapter i's mark, as the reader expects.
+    job.progress('split', 74, f'Splitting the audio into {len(markers)} chapters', force=True)
+    lead = markers[0]['start'] > 0.01
+    times = [m['start'] for m in markers if m['start'] > 0.01]
+    tail = markers[-1]['end'] < duration - 0.5
+    if tail: times.append(markers[-1]['end'])
+    raw = W / 'segments-raw'; shutil.rmtree(raw, ignore_errors=True); raw.mkdir()
+    sh(['ffmpeg', '-v', 'error', '-y', '-i', audio, '-map', '0:a:0', '-vn', '-c', 'copy', '-f', 'segment', '-segment_format', {'m4a': 'mp4', 'opus': 'ogg'}.get(ext, ext),
+        '-segment_times', ','.join(f'{t:.3f}' for t in times), '-reset_timestamps', '1', raw / f'piece-%03d.{ext}'])
+    pieces = sorted(raw.glob('piece-*'))
+    if lead: pieces = pieces[1:]                  # the stretch before the first chapter mark
+    pieces = pieces[:len(markers)]                # and after the last one
+    if len(pieces) != len(markers): raise RuntimeError(f'Expected {len(markers)} audio pieces but ffmpeg made {len(pieces)}.')
+    for i, pc in enumerate(pieces):
+        pc.rename(seg_dir / f'segment-{i:03d}.{ext}')
         job.progress('split', 74 + 6 * (i + 1) / len(markers), f'Splitting the audio: chapter {i + 1} of {len(markers)}', item=i + 1)
     files = sorted(seg_dir.glob('segment-*'))
-    total = sum(float(json.loads(sh(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'json', f]).stdout)['format']['duration']) for f in files)
-    want = markers[-1]['end'] - markers[0]['start']
-    if abs(total - want) > max(3.0, len(files) * 0.15): raise RuntimeError(f'The split audio adds up to {total:.0f}s but the chapters cover {want:.0f}s.')
+    # Check the pieces really are the chapters. Some ffmpeg builds keep the original timestamps in a piece's header, so a piece can report a
+    # start offset (and a "duration" that includes it); take that offset off, and also compare the amount of audio data (copying does not change it).
+    def real_length(f):
+        fmt = json.loads(sh(['ffprobe', '-v', 'error', '-show_entries', 'format=duration,start_time', '-of', 'json', f]).stdout)['format']
+        return float(fmt['duration']) - float(fmt.get('start_time') or 0)
+    lengths = [real_length(f) for f in files]
+    total, want = sum(lengths), markers[-1]['end'] - markers[0]['start']
+    size_ratio = sum(f.stat().st_size for f in files) / max(1, Path(audio).stat().st_size)
+    print(f'Split check: {len(files)} pieces, {total:.0f}s of {want:.0f}s expected, data ratio {size_ratio:.3f}', flush=True)
+    bad = [(i, round(l), round(m["end"] - m["start"])) for i, (l, m) in enumerate(zip(lengths, markers)) if abs(l - (m["end"] - m["start"])) > 3.0]
+    if abs(total - want) > max(3.0, len(files) * 0.15) and not (0.90 <= size_ratio <= 1.02):
+        raise RuntimeError(f'The split audio adds up to {total:.0f}s but the chapters cover {want:.0f}s (data ratio {size_ratio:.2f}; first mismatches {bad[:4]}).')
 
     key = f'reader/{book_id}/{meta["assetRevision"]}.json.gz'
     job.progress('upload', 80, 'Uploading the book', force=True)
