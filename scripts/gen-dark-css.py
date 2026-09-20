@@ -27,8 +27,8 @@ def flip(t, shadow=False):
     r, g, b, a = parse_color(t)
     h, l, s = colorsys.rgb_to_hls(r, g, b)
     if shadow and l <= .5: return t
-    chroma = s * (1 - abs(2 * l - 1))
-    l = .10 + .82 * (1 - l)
+    chroma = .4 * s * (1 - abs(2 * l - 1))  # keep hue but mute the tint so darks read as neutral black
+    l = .02 + .90 * (1 - l)
     s = min(1, chroma / max(.001, 1 - abs(2 * l - 1)))
     r, g, b = (round(x * 255) for x in colorsys.hls_to_rgb(h, l, s))
     return f'rgba({r},{g},{b},{round(a, 3)})' if a < 1 else f'rgb({r},{g},{b})'

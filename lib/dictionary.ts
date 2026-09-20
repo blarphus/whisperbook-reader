@@ -18,6 +18,9 @@ const rules:[string,string,string][]=[['ies','y','nv'],['ves','f','n'],['ves','f
 function ruleForms(w:string){const out:[string,string][]=[];for(const [suffix,replacement,parts] of rules){if(w.length>suffix.length+1&&w.endsWith(suffix)){const stem=w.slice(0,-suffix.length)+replacement;out.push([stem,parts]);if(/^(ing|ed|er|est)$/.test(suffix)&&/([^aeiou])\1$/.test(stem))out.push([stem.slice(0,-1),parts])}}return out}
 const clean=(w:string)=>w.toLowerCase().replace(/[’‘]/g,"'").replace(/(?:'s|s')$/,'').replace(/^[^a-z0-9]+|[^a-z0-9]+$/g,'');
 const sentence=(s:string)=>s.charAt(0).toUpperCase()+s.slice(1);
+// WordNet examples belong to a whole synonym group, so only keep one that actually contains this word (or an inflection of it).
+const stem=(w:string)=>w.length>4?w.slice(0,-2):w.length>3?w.slice(0,-1):w;
+const usesWord=(example:string|undefined,...words:string[])=>Boolean(example)&&words.some(w=>example!.toLowerCase().includes(stem(w)));
 
 export async function lookup(raw:string):Promise<Entry|null>{
  const word=clean(raw);if(!word)return null;
@@ -35,21 +38,23 @@ export async function lookup(raw:string):Promise<Entry|null>{
   if(s?.length){sources.push([w,s]);fromRules++}
  }
  if(!sources.length)return null;
- const each=sources.length===1?12:6;
- const senses=sources.flatMap(([,s])=>s.slice(0,each)).filter(([,definition,example])=>!isExplicitSense(definition,example)).slice(0,12).map(([pos,definition,example]):Sense=>({pos,definition:sentence(definition),example}));
+ const senses=sources.flatMap(([w,s])=>s.map(([pos,definition,example]):[Pos,string,string?]=>[pos,definition,usesWord(example,w,word)?example:undefined])).filter(([,definition,example])=>!isExplicitSense(definition,example)).map(([pos,definition,example]):Sense=>({pos,definition:sentence(definition),example}));
  if(!senses.length)return{word,lemma:word,senses:[],hidden:true};
  const lemma=(sources.find(([w])=>w!==word)||sources[0])[0];
  return{word,lemma,senses};
 }
 
-/** Asks the server (which asks Jev) which sense fits the clicked word: a 0-based index, -1 when none fits, or null to fall back. */
-export async function chooseSense(entry:Entry,sentence:string):Promise<number|null>{
- if(entry.hidden||!entry.senses.length)return 0;
+/** Asks the server (which asks Jev) which sense(s) fit the clicked word: 0-based indexes (best first; a runner-up is added only when Jev is unsure), [] when none fits, or null to fall back. */
+export async function chooseSense(entry:Entry,sentence:string):Promise<number[]|null>{
+ if(entry.hidden||!entry.senses.length)return [0];
  try{
   const response=await fetch('/api/define',{method:'POST',headers:{'content-type':'application/json'},signal:AbortSignal.timeout(4000),body:JSON.stringify({sentence,definitions:entry.senses.map(s=>`${posName[s.pos]}: ${s.definition}`)})});
   if(!response.ok)return null;
-  const {number,none}=(await response.json()) as {number?:number;none?:boolean};
-  if(none)return -1;
-  return number!==undefined&&Number.isInteger(number)&&number>=1&&number<=entry.senses.length?number-1:null;
+  const {number,none,confidence,ranked}=(await response.json()) as {number?:number;none?:boolean;confidence?:number|null;ranked?:{number:number;p:number}[]};
+  if(none)return [];
+  if(number===undefined||!Number.isInteger(number)||number<1||number>entry.senses.length)return null;
+  const picks=[number-1];
+  if((confidence??1)<0.5)for(const r of ranked??[])if(r.number!==number&&r.p>=0.2&&r.number<=entry.senses.length&&picks.length<2)picks.push(r.number-1);
+  return picks;
  }catch{return null}
 }

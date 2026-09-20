@@ -10,7 +10,7 @@ const dict = path.join(root, 'node_modules/wordnet-db/dict');
 const excDir = path.join(root, 'scripts/wordnet-exc');
 const out = path.join(root, 'public/dict');
 const POS = {noun: 'n', verb: 'v', adj: 'a', adv: 'r'};
-const MAX_PER_POS = 8, MAX_TOTAL = 12;
+const MAX_PER_POS = Infinity, MAX_TOTAL = Infinity; // keep every sense: Jev needs the full list to pick from
 
 const shardKey = w => (w.length > 1 ? w.slice(0, 2) : w + '_').replace(/[^a-z]/g, '_');
 

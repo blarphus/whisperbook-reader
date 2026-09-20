@@ -8,7 +8,7 @@ export async function POST(request:Request){
  try{body=await request.json()}catch{return json({error:'Invalid JSON'},400)}
  const {sentence,definitions}=body;
  if(typeof sentence!=='string'||!/~[^~]+~/.test(sentence)||sentence.length>800)return json({error:'Invalid sentence'},400);
- if(!Array.isArray(definitions)||definitions.length<1||definitions.length>20||definitions.some(d=>typeof d!=='string'||!d||d.length>500))return json({error:'Invalid definitions'},400);
+ if(!Array.isArray(definitions)||definitions.length<1||definitions.length>120||definitions.some(d=>typeof d!=='string'||!d||d.length>500))return json({error:'Invalid definitions'},400);
  const criteria=Object.fromEntries([...(definitions as string[]),'none of the above: none of these definitions fits how the word is used here'].map((d,i)=>[String(i+1),d]));
  const question={type:'choice',instructions:'The sentence uses one word between tildes (~). Which numbered definition matches the meaning of that word as it is used in this sentence?',criteria};
  const cfAccount=process.env.CLOUDFLARE_ACCOUNT_ID,cfToken=process.env.CLOUDFLARE_API_TOKEN;
@@ -20,12 +20,13 @@ export async function POST(request:Request){
  try{
   const response=await fetch(target.url,{method:'POST',signal:AbortSignal.timeout(6000),headers:{'content-type':'application/json',authorization:`Bearer ${target.token}`},body:JSON.stringify(target.body)});
   if(!response.ok)return json({error:'Jev request failed'},502);
-  type Answers={definition?:{choice?:unknown;confidence?:number}};
+  type Answers={definition?:{choice?:unknown;confidence?:number;probabilities?:Record<string,number>}};
   const data=(await response.json()) as {answers?:Answers;result?:{answers?:Answers;result?:{answers?:Answers}}};
   const answer=(data.answers??data.result?.answers??data.result?.result?.answers)?.definition;
   const number=Number(answer?.choice);
   if(!Number.isInteger(number)||number<1||number>definitions.length+1)return json({error:'Unexpected answer'},502);
   if(number===definitions.length+1)return json({none:true,confidence:answer?.confidence??null});
-  return json({number,confidence:answer?.confidence??null});
+  const ranked=Object.entries(answer?.probabilities??{}).map(([k,p])=>({number:Number(k),p})).filter(r=>r.number>=1&&r.number<=definitions.length).sort((a,b)=>b.p-a.p).slice(0,3);
+  return json({number,confidence:answer?.confidence??null,ranked});
  }catch{return json({error:'Jev unreachable'},502)}
 }
