@@ -1,5 +1,5 @@
 // Books added with scripts/add_book.py live in R2 (catalog.json) instead of in code, so adding one needs no deploy.
-import {preparedKeys,r2Books} from './drive';
+import {preparedKeys,r2Books} from './storage';
 import type {BookMetadata} from './catalog';
 export type RemoteBook=BookMetadata&{classes?:string[];prepared?:string;hidden?:boolean;needsReview?:boolean;audioExtension?:string;addedAt?:string};
 

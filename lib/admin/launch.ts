@@ -1,4 +1,4 @@
-import {r2Origin} from '../drive';
+import {r2Origin} from '../storage';
 import {pushKernel} from './kaggle';
 import {randomHex,saveJob,type Job} from './store';
 

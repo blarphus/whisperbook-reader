@@ -1,4 +1,4 @@
-import {r2Origin} from './drive';
+import {r2Origin} from './storage';
 import {hasBucket} from './admin/env';
 import {readCatalog,readOverrides} from './admin/store';
 import type {RemoteBook} from './remote-catalog';
