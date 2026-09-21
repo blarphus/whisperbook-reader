@@ -302,19 +302,74 @@ def transcribe(job, src, duration, prompt):
                          'transcribe_seconds': round(took, 1), 'speed_x_realtime': round((duration - origin) / max(took, 1), 1)}}
 
 
-def split_chapters(out, book_id, meta):
+BLOCK_TAGS = ['p', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+
+
+def mend_hyphens(data, transcript):
+    """Scanned ebooks keep line-break hyphens inside words ('ter-minal', 'peo-ple', 'any-way'). Join such a word when its joined spelling is one the book
+    itself (or the narration) uses on its own; real compounds ('well-built') have no joined form in use and are left alone."""
+    from collections import Counter
+    plain = re.compile(r'<span class="word" data-word="\d+">([^<]*)</span>')
+    use = Counter()
+    for ch in data['chapters']:
+        for t in plain.findall(ch['html']):
+            t = t.strip().lower()
+            if t.isalpha(): use[t] += 1
+    for w in (transcript or {}).get('words', []):
+        t = re.sub(r'[^a-z]', '', w['word'].lower())
+        if t: use[t] += 1
+    pat = re.compile(r'(<span class="word" data-word="\d+">)([A-Za-z]+)-([a-z]+)(</span>)')
+    fixed = 0
+    def join(m):
+        nonlocal fixed
+        a, b = m.group(2), m.group(3)
+        if use[(a + b).lower()] >= 1:
+            fixed += 1; return m.group(1) + a + b + m.group(4)
+        return m.group(0)
+    for ch in data['chapters']: ch['html'] = pat.sub(join, ch['html'])
+    print(f'Joined {fixed} line-break hyphens', flush=True)
+    return fixed > 0
+
+
+def tidy_chunk(piece, keep_wordless, originally_wordless=frozenset()):
+    """After words outside a chapter are removed, clear away what they left behind: blocks with no words, and the punctuation/spaces that
+    sat where those words were (before the first kept word and after the last). One closing mark right after the last word is kept."""
+    from bs4 import NavigableString
+    closing = re.compile(r"[\s.,;:!?\"'”’)\]\-–—…]{0,4}")
+    for block in piece.find_all(BLOCK_TAGS):
+        if block.find(BLOCK_TAGS): continue
+        spans = block.find_all('span', attrs={'data-word': True})
+        if not spans:
+            if id(block) in originally_wordless and keep_wordless and not block.find('img') and not re.search(r'\w', block.get_text()): block.decompose(); continue
+            # a block that never had words (a picture, a rule) stays only in the first chapter; one that was emptied by the cut always goes
+            if not (keep_wordless and id(block) in originally_wordless) and block.parent is not None: block.decompose()
+            continue
+        inside = {id(d) for sp in spans for d in sp.descendants}
+        nodes = list(block.descendants)
+        pos = {id(n): i for i, n in enumerate(nodes)}
+        first, last = pos[id(spans[0])], pos[id(spans[-1])]
+        tail = next((n for n in nodes[last + 1:] if isinstance(n, NavigableString) and id(n) not in inside), None)
+        keep_tail = tail is not None and closing.fullmatch(str(tail)) is not None
+        for i, n in enumerate(nodes):
+            if isinstance(n, NavigableString) and id(n) not in inside and (i < first or i > last) and not (keep_tail and n is tail):
+                n.extract()
+
+
+def split_chapters(out, book_id, meta, transcript=None):
     """Some ebooks (scans, single-file conversions) have no chapter breaks, so the whole book is one reader chapter. When the audio has
     many more chapters than the ebook has sections, cut the text at the paragraph where each audio chapter starts being read."""
     from bs4 import BeautifulSoup
     path = out / f'{book_id}.reader.json.gz'
     data = json.loads(gzip.decompress(path.read_bytes()))
+    changed = mend_hyphens(data, transcript)
     marks = [m for m in data['markers'] if m['end'] > data['introEnd'] and m['start'] < data['creditsStart']]
-    if len(data['chapters']) * 2 >= len(marks): return
+    if len(data['chapters']) * 2 >= len(marks) and not changed: return
+    if len(data['chapters']) * 2 >= len(marks): marks = []
     result = []
     for ch in data['chapters']:
         cues, first_cue, last_cue = ch['cues'], ch['start'], ch['end']
         inside = [m for m in marks if first_cue + 20 < m['start'] < last_cue]
-        if not inside: result.append(ch); continue
+        if not inside or len(data['chapters']) * 2 >= len(marks): result.append(ch); continue
         soup = BeautifulSoup(ch['html'], 'html.parser')
         toks = [w.get_text().strip() for w in soup.find_all('span', attrs={'data-word': True})]
         starts = sorted({a for a, _ in ch['sentences']})
@@ -339,12 +394,12 @@ def split_chapters(out, book_id, meta):
         for j, title in enumerate(cut_titles):
             a, b = cuts[j], cuts[j + 1]
             piece = BeautifulSoup(ch['html'], 'html.parser')
+            plain = {id(b) for b in piece.find_all(BLOCK_TAGS) if not b.find('span', attrs={'data-word': True})}
             for w in piece.find_all('span', attrs={'data-word': True}):
                 n = int(w['data-word'])
                 if a <= n < b: w['data-word'] = str(n - a)
                 else: w.decompose()
-            for block in piece.find_all(['p', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
-                if not block.find(['p', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']) and not block.get_text().strip(): block.decompose()
+            tidy_chunk(piece, keep_wordless=(j == 0), originally_wordless=plain)
             result.append(dict(title=title, html=str(piece), cues=cues[a:b], sentences=[[x - a, min(y, b) - a] for x, y in ch['sentences'] if a <= x < b], start=cues[a][0], end=cues[b - 1][1]))
     for x, y in zip(result, result[1:]): x['end'] = y['start']
     result[-1]['end'] = data['creditsStart']
@@ -458,7 +513,7 @@ def process(job):
         needs_review = st['coverage'] < MIN_COVERAGE or run_len > MAX_RUN or bool(weak) or not transcript['metadata']['quality_passed']
         job.progress('align', 74, f'Matched {st["coverage"] * 100:.1f}% of the ebook’s words', force=True)
 
-        split_chapters(out, book_id, meta)
+        split_chapters(out, book_id, meta, transcript)
     else:
         out = W / 'book' / 'Website'; out.mkdir(parents=True, exist_ok=True)
         meta, nw = transcript_book(out, book_id, cfg, transcript, probe, duration)

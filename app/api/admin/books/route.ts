@@ -30,6 +30,11 @@ export async function POST(request:Request){
  if(b.action==='publish'||b.action==='classes'){
   if(Array.isArray(b.classes)){book.classes=b.classes.map(String).filter(c=>CLASSES.includes(c));const o=await readOverrides();if(b.id&&o[b.id]){delete o[b.id];await writeOverrides(o)}}
   if(b.action==='publish'){(book as any).hidden=false;delete (book as any).needsReview}
+ }else if(b.action==='package'){
+  // Swap in a rebuilt reading package (same audio) without re-running the pipeline.
+  const x=b as any,key=String(x.prepared||''),rev=String(x.assetRevision||'');
+  if(!new RegExp('^reader/'+book.id+'/[a-f0-9]{16}\\.json\\.gz$').test(key)||!/^[a-f0-9]{16}$/.test(rev)||!Array.isArray(x.chapters))return reply({error:'Invalid package.'},400);
+  book.prepared=key;(book as any).assetRevision=rev;(book as any).chapters=x.chapters.map((c:any)=>({title:String(c.title),start:Number(c.start),end:Number(c.end)}));(book as any).chapterCount=x.chapters.length;
  }else if(b.action==='cover'){
   const u=String((b as any).coverUrl||'');
   if(!/^https:\/\/media\.studentbookreader\.com\/covers\/[A-Za-z0-9._-]+(\?v=[A-Za-z0-9]+)?$/.test(u))return reply({error:'Invalid cover address.'},400);
