@@ -411,6 +411,34 @@ def split_chapters(out, book_id, meta, transcript=None):
     meta['chapterCount'] = len(result)
 
 
+def split_long_chapters(chapters, limit=6000, target=4000):
+    """A phone has to lay out a whole reader chapter at once, so very long ones (a 3-hour chapter is 28,000 words) are cut into parts of about
+    `target` words at paragraph breaks. Only the reading text is cut; the audio keeps its own chapter marks."""
+    out = []
+    for ch in chapters:
+        n = len(ch['cues'])
+        paras = [(m.start(), m.end(), re.findall(r'data-word="(\d+)"', m.group(0))) for m in re.finditer(r'<p>.*?</p>', ch['html'], re.S)]
+        if n <= limit or len(paras) < 2: out.append(ch); continue
+        head = re.match(r'<div class="chapter-text">\n(<h1>.*?</h1>\n)?', ch['html'], re.S)
+        h1 = head.group(1) or '' if head else ''
+        groups, cur, first = [], [], 0
+        for a, b, ids in paras:
+            if not ids: continue
+            if cur and int(ids[0]) - first >= target: groups.append(cur); cur, first = [], int(ids[0])
+            if not cur: first = int(ids[0])
+            cur.append((a, b, ids))
+        if cur: groups.append(cur)
+        k = len(groups)
+        for j, g in enumerate(groups):
+            lo, hi = int(g[0][2][0]), int(g[-1][2][-1]) + 1
+            body = '\n'.join(re.sub(r'data-word="(\d+)"', lambda m: f'data-word="{int(m.group(1)) - lo}"', ch['html'][a:b]) for a, b, _ in g)
+            out.append(dict(title=f"{ch['title']} (part {j + 1} of {k})", html=f'<div class="chapter-text">\n{h1 if j == 0 else ""}{body}\n</div>', cues=ch['cues'][lo:hi],
+                            sentences=[[x - lo, min(y, hi) - lo] for x, y in ch['sentences'] if lo <= x < hi], start=ch['cues'][lo][0], end=ch['cues'][hi - 1][1]))
+        for x, y in zip(out[-k:], out[-k + 1:]): x['end'] = y['start']
+        out[-1]['end'] = ch['end']
+    return out
+
+
 def transcript_book(out, book_id, cfg, transcript, probe, duration):
     """No ebook: the reader text is the Whisper transcript itself, cut into chapters at the audiobook's own chapter marks."""
     import html as htmllib
@@ -435,6 +463,7 @@ def transcript_book(out, book_id, cfg, transcript, probe, duration):
         chapters.append(dict(title=m['title'], html=html, cues=cues, sentences=sentences, start=cues[0][0], end=cues[-1][1])); stats_words += len(ws)
     if not chapters: raise RuntimeError('No narrated chapters were found in the audiobook.')
     for a, b in zip(chapters, chapters[1:]): a['end'] = b['start']
+    chapters = split_long_chapters(chapters)
     credits = next((m['start'] for m in markers if is_credit(m['title']) and m['start'] > chapters[-1]['start']), duration)
     chapters[-1]['end'] = credits
     data = dict(audioOnlyIntroduction=False, version=1, id=book_id, title=cfg['title'], author=cfg['author'], duration=duration, introEnd=chapters[0]['start'], creditsStart=credits, chapters=chapters, markers=markers)
