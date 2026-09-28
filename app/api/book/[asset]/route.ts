@@ -1,4 +1,5 @@
-import {preparedKeys,r2Origin} from '../../../../lib/storage';
+import {preparedKeys} from '../../../../lib/storage';
+import {r2Origin} from '../../../../lib/media-origin';
 import {remoteBooks} from '../../../../lib/remote-catalog-server';
 
 // Reader packages live in R2 (built-in books are listed in lib/storage.ts, added books in the catalog); fetched server-side so browsers never need CORS access to the bucket.

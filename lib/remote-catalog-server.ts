@@ -1,4 +1,4 @@
-import {r2Origin} from './storage';
+import {r2Origin} from './media-origin';
 import {hasBucket} from './admin/env';
 import {readCatalog,readOverrides} from './admin/store';
 import type {RemoteBook} from './remote-catalog';
@@ -16,6 +16,13 @@ export async function remoteCatalog():Promise<Data>{
   else{
    const get=async(k:string)=>{const r=await fetch(`${r2Origin}/${k}`);return r.ok?await r.json():null};
    data={books:((await get('catalog.json')) as {books?:RemoteBook[]}|null)?.books??[],overrides:((await get('class-overrides.json')) as Record<string,string[]>|null)??{}};
+  }
+  // Keep catalog clients on the reader origin for covers as well as audio.
+  // The source objects remain in R2, while school filters only need to allow
+  // the approved reader hostname.
+  const coverPrefix=`${r2Origin}/covers/`;
+  for(const b of data.books){
+   if(typeof b.cover==='string'&&b.cover.startsWith(coverPrefix))b.cover=`/api/media/covers/${b.cover.slice(coverPrefix.length)}`;
   }
   cached={at:Date.now(),data};
   return data;

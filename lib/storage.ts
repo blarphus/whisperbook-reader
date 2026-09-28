@@ -1,6 +1,8 @@
-// Custom domain on the whisperbook-audio R2 bucket (the pub-*.r2.dev address is rate-limited and often filtered).
-export const r2Origin = 'https://media.studentbookreader.com';
-export const r2AudioBase = `${r2Origin}/audio`;
+// Keep browser playback on the reader origin. Some school filters allow the
+// page hostname while blocking a separate media hostname, even when the
+// media host is otherwise reachable. The server-side route streams these
+// allow-listed R2 objects without exposing a second browser origin.
+export const r2AudioBase = '/api/media/audio';
 export const preparedKeys: Record<string, string> = {
   'dungeon-crawler-carl': 'reader/dungeon-crawler-carl/9d81f65a2e919ff9.json.gz',
   'the-car': 'reader/the-car/ba6e681221fdc09f.json.gz',
