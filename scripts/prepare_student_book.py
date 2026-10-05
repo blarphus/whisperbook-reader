@@ -393,6 +393,15 @@ def prepare_alignment(book,sections,transcript,probe,output):
     markers=[dict(title=c['tags']['title'],start=float(c['start_time']),end=float(c['end_time'])) for c in probe.get('chapters',[])]
     credits=next((m['start'] for m in markers if 'closing credit' in m['title'].lower() or 'end credit' in m['title'].lower()),book['duration'])
     credits=book.get('verifiedCreditsStart',credits)
+    # ffprobe and cue construction round to milliseconds, so the final cue can
+    # exceed the exact container duration by a fraction of a millisecond.
+    # Clamp that harmless rounding residue while retaining the guard against a
+    # real credit/prose overlap.
+    final_end=chapters[-1]['cues'][-1][1]
+    if final_end>credits:
+        assert final_end-credits<=.05, 'Credits overlap narrated prose'
+        chapters[-1]['cues'][-1][1]=credits
+        cues[-1][1]=credits
     assert chapters[-1]['cues'][-1][1]<=credits<=book['duration'], 'Credits overlap narrated prose'
     chapters[-1]['end']=credits
     data=dict(audioOnlyIntroduction=False,version=1,id=book['id'],title=book['title'],author=book['author'],duration=book['duration'],introEnd=chapters[0]['start'],creditsStart=credits,chapters=chapters,markers=markers)
