@@ -234,7 +234,9 @@ def plan_chunks(src, duration, target=900.0, slack=90.0):
 
 
 def transcribe(job, src, duration, prompt):
-    subprocess.run([sys.executable, '-m', 'pip', '-q', 'install', 'faster-whisper'], check=True)
+    # faster-whisper 1.2.x still passes metadata_errors to PyAV; PyAV 19 removed that
+    # argument, so keep the compatible decoder line explicit on fresh Kaggle workers.
+    subprocess.run([sys.executable, '-m', 'pip', '-q', 'install', 'faster-whisper', 'av<19'], check=True)
     import torch
     from faster_whisper import WhisperModel
     assert torch.cuda.is_available(), 'No GPU is attached to this Kaggle session'
@@ -249,7 +251,7 @@ def transcribe(job, src, duration, prompt):
         r = requests.get(f'{job.cfg["media"]}/{ckpt_key}', timeout=120)
         if r.ok:
             c = json.loads(gzip.decompress(r.content))
-            if abs(c['duration'] - duration) < 1 and c['cuts'] == [round(x, 3) for x in cuts]:
+            if abs(c['duration'] - duration) < 1 and c['cuts'] == [round(x, 3) for x in cuts] and len(c.get('words', [])) > 100:
                 rows, words, seg_id, skipped, first = c['rows'], c['words'], c['seg_id'], c['skipped'], c['next']
                 print(f'Resuming from piece {first} of {len(cuts) - 1}', flush=True)
     except Exception as e: print('no checkpoint:', e, flush=True)
@@ -267,6 +269,10 @@ def transcribe(job, src, duration, prompt):
         out = []
         for sg in model.transcribe(str(wav), language='en', word_timestamps=True, condition_on_previous_text=False, vad_filter=vad, beam_size=5, initial_prompt=prompt)[0]:
             out.append(sg); report(lo + float(sg.end))
+        # A model/runtime mismatch can return segment text while silently omitting the word list.
+        # Treat that as a failed attempt so the caller retries without VAD or with smaller pieces.
+        if out and not any(seg.words for seg in out):
+            raise RuntimeError('Whisper returned segments without word timestamps')
         return out
 
     def piece(lo, hi, depth=0):
